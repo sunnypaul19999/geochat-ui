@@ -1,0 +1,22 @@
+.component-ui-toolbar #geoChatLogo img {
+    width: 40px;
+    height: 40px;
+}
+
+.component-ui-toolbar #userProfile {
+    margin-left: auto;
+    cursor: pointer;
+}
+
+.component-ui-toolbar #userProfile img {
+    width: 35px;
+    height: 35px;
+}
+
+.component-ui-toolbar .card {
+    background-color: var(--primary-color);
+}
+
+.component-ui-toolbar .back-button {
+    cursor: pointer;
+}

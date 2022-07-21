@@ -1,0 +1,59 @@
+@import "./hover-text-input.css";
+
+@media (min-width: 1281px) and (max-width: 1024px) {
+
+    .hover-textarea-input .hover-textarea-input-area {
+        width: 800px;
+    }
+
+
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+
+    .hover-textarea-input .hover-textarea-input-area {
+        width: 60%;
+    }
+
+    .hover-text-input .hover-text-input-area .hover-text-input-action .action {
+        width: 130px;
+    }
+
+}
+
+@media (min-width: 320px) and (max-width: 766px) {
+
+    .hover-text-input .hover-text-input-area .hover-text-input-action .action button {
+        min-width: 40px;
+        max-width: 40px;
+        height: 30px;
+        font-size: 14px;
+    }
+
+    .hover-text-input .hover-text-input-area .hover-text-input-action .action button .button-text {
+        display: none;
+    }
+
+    .hover-text-input .hover-text-input-area .hover-text-input-action .action button.back span.back-icon,
+    .hover-text-input .hover-text-input-area .hover-text-input-action .action button.next span.next-icon,
+    .hover-text-input .hover-text-input-area .hover-text-input-action .action button.cancel span.cancel-icon,
+    .hover-text-input .hover-text-input-area .hover-text-input-action .action button.submit span.submit-icon {
+        margin-top: 0px;
+        margin-right: 2px;
+        margin-left: 2px;
+        vertical-align: sub;
+    }
+
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+
+    .hover-textarea-input .hover-textarea-input-area {
+        width: 80%;
+    }
+
+    .hover-text-input .hover-text-input-area .hover-text-input-action .action {
+        width: 200px;
+    }
+
+}

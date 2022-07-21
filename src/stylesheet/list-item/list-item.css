@@ -1,0 +1,73 @@
+.list-item {
+    width: 100%;
+    padding: 0px 10px 0px 10px;
+    margin: 10px 0px 10px 0px;
+    font-weight: 550;
+    text-align: left;
+    cursor: pointer;
+}
+
+/*rgba(17, 17, 26, 0.1) 0px 1px 0px;*/
+.list-item .card:hover {
+    box-shadow: var(--secondary-color) 0px 1px 0px;
+}
+
+.list-item .card {
+    width: inherit;
+    position: relative;
+}
+
+/*rgb(232, 247, 244)*/
+.list-item .card .card-body {
+    width: inherit;
+    color: var(--on-surface-color-1);
+    padding: 5px;
+    background-color: var(--surface-color-1);
+}
+
+.list-item .list-item-action-toolbar {
+    top: 100%;
+    right: 0px;
+    z-index: 10;
+    position: absolute;
+    display: none;
+}
+
+.list-item:hover .list-item-action-toolbar {
+    top: 100%;
+    right: 0px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.list-item .list-item-action-toolbar .list-item-icon {
+    user-select: none;
+    padding: 5px;
+    font-size: 20px;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+/*
+background-color: rgba(66, 157, 236, 0.592);
+*/
+.list-item .list-item-action-toolbar .list-item-icon.edit {
+    color: var(--on-secondary-color);
+    border-top-left-radius: 40%;
+    border-bottom-left-radius: 40%;
+    background-color: var(--secondary-color);
+}
+
+/*
+background-color: rgba(255, 0, 0, 0.592);
+*/
+.list-item .list-item-action-toolbar .list-item-icon.delete {
+    border-top-right-radius: 40%;
+    border-bottom-right-radius: 40%;
+    background-color: var(--error-color);
+}
+
+
+.list-item:hover .list-item-action-toolbar .list-item-icon.press-effect:hover:active {
+    box-shadow: rgba(0, 0, 0, 0.192) 3px 3px 6px 0px inset, rgba(0, 0, 0, 0.066) -3px -3px 6px 1px inset;
+}

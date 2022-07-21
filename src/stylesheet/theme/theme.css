@@ -1,0 +1,42 @@
+:root {
+    --primary-color: #cddbf0;
+    --primary-color-light: #cddbf0;
+    --primary-color-dark: #9ca9bd;
+
+    --secondary-color: #1b1bbb3b;
+    --secondary-color-light: #1b1bbb3b;
+    --secondary-color-dark: #1b1bbb3b;
+
+    --surface-color-1: #e9f7f4;
+    --surface-color-1-light: #e9f7f4;
+    --surface-color-1-dark: #b7c4c1;
+
+    --surface-color-2: #63e0d2;
+    --surface-color-2-light: #9affff;
+    --surface-color-2-dark: #21aea1;
+
+    --background-color-1: #d1dcdf;
+    --background-color-1-light: #d1dcdf;
+    --background-color-1-dark: #a0aaad;
+
+    --background-color-2: #b5f7e6;
+    --background-color-2-light: #e8ffff;
+    --background-color-2-dark: #84c4b4;
+
+    --error-color: #ff0000;
+    --error-color-light: #ff5a36;
+    --error-color-dark: #c20000;
+
+    --on-primary-color-1: #000000;
+    --on-primary-color-2: #0000ff;
+
+    --on-secondary-color: #000000;
+
+    --on-background-1-color: #96ada0;
+    --on-background-2-color: #54776a;
+
+    --on-surface-color-1: #000000;
+    --on-surface-color-2: #000000;
+
+    --on-background-color: #ffffff;
+}

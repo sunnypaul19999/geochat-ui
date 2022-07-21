@@ -1,0 +1,31 @@
+.message-window {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.message-item .card {
+    color: var(--on-surface-color-2);
+    background-color: var(--surface-color-2);
+}
+
+.message-item .card .message-title h6 {
+    font-weight: 600;
+}
+
+.message-item .card .message-picture img {
+    width: 40px;
+    height: 40px;
+}
+
+.message-item .card .message-reply-button {
+    cursor: pointer;
+}
+
+.message-item .card .like-button-on,
+.message-item .card .dislike-button-on,
+.message-item .card .like-button-off,
+.message-item .card .dislike-button-off {
+    display: flex;
+    cursor: pointer;
+}
