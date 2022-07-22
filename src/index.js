@@ -1,14 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import { ListItemDisplay } from "route/list-item-display/ListItemDisplay";
+import { TopicDisplay } from "route/topic-display/TopicDisplay";
 
 import 'index.css';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
+
     <React.StrictMode>
-        <ListItemDisplay />
+
+        <TopicDisplay />
+
     </React.StrictMode>
+
 );
