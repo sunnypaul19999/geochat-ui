@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { LeftWindow } from "component/left-window/LeftWindow";
-import { ListItem } from "component/list-item/ListItem";
+
+import { getTopicListItems } from "./TopicListItems";
 
 import { getTopicsByPage } from "server/topic/GetTopicsByPage";
 
@@ -9,55 +10,37 @@ import produce from "immer";
 
 async function nextPage(topicPageNumber) {
 
-    let topics = {};
+    try {
 
-    let page = await getTopicsByPage(topicPageNumber);
+        const page = await getTopicsByPage(topicPageNumber);
 
-    page.forEach(topic => {
+        let topics = {};
 
-        topics[topic.id] = {
-            ...topic
+        page.forEach(topic => {
+
+            topics[topic.id] = {
+                ...topic
+            };
+
+        });
+
+        return {
+
+            pageNumber: topicPageNumber,
+
+            topics: topics
+
         };
 
-    });
+    } catch (e) {
 
-    return {
+        //toast the error message here
 
-        pageNumber: topicPageNumber,
-
-        topics: topics
-
-    };
+        return;
+    }
 
 }
 
-function getListItems(topics) {
-
-    //return spinner when topics is falsy
-    if (!topics) return (<></>);
-
-    let listItems = [];
-
-    const topicIds = Object.keys(topics);
-
-    topicIds.forEach(topicId => {
-
-        const topic = topics[topicId];
-
-        listItems.push(
-            <ListItem
-                key={`topic_${topicId}`}
-                itemId={topicId}
-                title={topic.topic_title}
-                canEdit
-                canDelete
-            />
-        );
-
-    });
-
-    return listItems;
-}
 
 export function TopicDisplay() {
 
@@ -71,15 +54,19 @@ export function TopicDisplay() {
 
         const page = await nextPage(state.pageNumber);
 
-        setState(
-            produce(draft => {
+        if (page) {
 
-                draft.pageNumber = page.pageNumber;
+            setState(
+                produce(draft => {
 
-                draft.topics = page.topics;
+                    draft.pageNumber = page.pageNumber;
 
-            })
-        );
+                    draft.topics = page.topics;
+
+                })
+            );
+
+        }
 
     }, [state.pageNumber]);
 
@@ -95,7 +82,7 @@ export function TopicDisplay() {
     return (
         <LeftWindow >
 
-            {getListItems(state.topics)}
+            {getTopicListItems(state.topics)}
 
         </LeftWindow>
     )
