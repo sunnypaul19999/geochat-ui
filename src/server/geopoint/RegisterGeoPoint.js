@@ -6,7 +6,7 @@ import { geoPointEndpointConfig } from "server/geopoint/GeoPointEndpointConfig";
 
 function createRequest(topicPageNumber) {
 
-    return axios.post('http://localhost:5000/geochat/api/v1/geopoint/register', {
+    return axios.post(geoPointEndpointConfig.register.uri(), {
 
         lat: "23.677303229900822",
 

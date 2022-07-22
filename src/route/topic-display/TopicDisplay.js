@@ -6,7 +6,6 @@ import { ListItem } from "component/list-item/ListItem";
 import { getTopicsByPage } from "server/topic/GetTopicsByPage";
 
 import produce from "immer";
-import { registerGeoPoint } from "server/geopoint/RegisterGeoPoint";
 
 async function nextPage(topicPageNumber) {
 

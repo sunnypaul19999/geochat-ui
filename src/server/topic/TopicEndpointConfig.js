@@ -2,7 +2,7 @@ import { serverConfig } from "config.js/ServerConfig"
 
 const serverUrl = serverConfig.config.baseUrl;
 
-const base = `${serverUrl}/topic`;
+const base = `${serverUrl}/geopoint/topic`;
 export const topicEndpointConfig = {
 
 

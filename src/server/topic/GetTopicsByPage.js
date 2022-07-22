@@ -6,7 +6,7 @@ import { topicEndpointConfig } from "./TopicEndpointConfig";
 
 function createRequest(topicPageNumber) {
 
-    return axios.get('http://localhost:5000/geochat/api/v1/geopoint/topic/page/1', {
+    return axios.get(topicEndpointConfig.getByPage.uri(topicPageNumber), {
 
         withCredentials: true,
 
