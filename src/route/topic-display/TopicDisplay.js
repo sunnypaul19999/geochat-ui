@@ -11,8 +11,8 @@ import { getTopicListItems } from "./TopicListItems";
 import { fetchTopicPage } from "./TopicQuery";
 
 import { dispatchFetchNextTopicPageEvent } from "./TopicDisplayEvent";
+
 import { RightWindow } from "component/right-window/RightWindow";
-import { UIToolbar } from "component/ui-toolbar/ui-toolbar";
 
 
 function produceNextState(pageDetails, setState) {
@@ -129,8 +129,6 @@ export function TopicDisplay() {
 
         <>
             <LeftWindow>
-
-                <UIToolbar />
 
                 <div
                     ref={listItemDisplayRef}

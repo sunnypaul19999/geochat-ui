@@ -13,8 +13,9 @@ import { fetchSubTopicPage } from "./SubTopicQuery";
 import { getSubTopicListItems } from "./SubTopicListItems";
 
 import { dispatchFetchNextSubTopicPageEvent } from "./SubTopicDisplayEvent";
+
 import { RightWindow } from "component/right-window/RightWindow";
-import { UIToolbar } from "component/ui-toolbar/ui-toolbar";
+
 
 
 
@@ -139,8 +140,6 @@ export function SubTopicDisplay(props) {
 
         <>
             <LeftWindow>
-
-                <UIToolbar />
 
                 <div
                     ref={listItemDisplayRef}

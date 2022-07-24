@@ -1,6 +1,5 @@
 import { LeftWindow } from "component/left-window/LeftWindow";
 import { RightWindow } from "component/right-window/RightWindow";
-import { UIToolbar } from "component/ui-toolbar/ui-toolbar";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { MessageDisplay } from "route/meta-discuss/MetaDiscussDisplay";
@@ -24,8 +23,6 @@ export function SubTopicInfoDisplay(props) {
 
         <>
             <LeftWindow>
-
-                <UIToolbar />
 
                 <div class="sub-topic-info-display">
                     <div class="sub-topic-heading-container mb-1">
