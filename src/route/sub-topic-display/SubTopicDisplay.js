@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { produce } from 'immer';
 
-import { useDisplayObserver } from "route/topic-display/DisplayObserver";
+import { useDisplayObserver } from "route/DisplayObserver";
 
 import { LeftWindow } from "component/left-window/LeftWindow";
 
