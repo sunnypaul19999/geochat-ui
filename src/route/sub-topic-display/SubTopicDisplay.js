@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { useParams } from "react-router-dom";
+
 import { produce } from 'immer';
 
 import { useDisplayObserver } from "route/DisplayObserver";
@@ -11,6 +13,7 @@ import { fetchSubTopicPage } from "./SubTopicQuery";
 import { getSubTopicListItems } from "./SubTopicListItems";
 
 import { dispatchFetchNextSubTopicPageEvent } from "./SubTopicDisplayEvent";
+
 
 
 function produceNextState(pageDetails, setState) {
@@ -67,11 +70,13 @@ topicId - topic id of subtopic
 
 export function SubTopicDisplay(props) {
 
+    const { topicId } = useParams();
+
     const [state, setState] = useState({
 
         nextPageNumber: 1,
 
-        topicId: props.topicId,
+        topicId: topicId,
 
         subTopics: {},
 

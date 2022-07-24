@@ -11,6 +11,7 @@ import { getMessageItems } from "./MessageItems";
 import { fetchMetaDiscussPage } from "./MetaDiscussQuery";
 
 import { dispatchFetchNextMetaDiscussPageEvent } from "./MetaDiscussEvent";
+import { useParams } from "react-router-dom";
 
 
 function produceNextState(pageDetails, setState) {
@@ -67,13 +68,15 @@ topicId - topic id of subtopic
 
 export function MessageDisplay(props) {
 
+    const { topicId, subTopicId } = useParams();
+
     const [state, setState] = useState({
 
         nextPageNumber: 1,
 
-        topicId: props.topicId,
+        topicId: topicId,
 
-        subTopicId: props.subTopicId,
+        subTopicId: subTopicId,
 
         messages: {},
 
