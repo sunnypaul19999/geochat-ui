@@ -1,0 +1,21 @@
+.sub-topic-info-display {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.sub-topic-info-display .sub-topic-description-container {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.sub-topic-info-display .sub-topic-description-container>.card {
+    height: 100%;
+}
+
+.sub-topic-info-display .sub-topic-description-container>.card>.card-body {
+    height: 100%;
+    overflow: auto;
+}

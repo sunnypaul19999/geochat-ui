@@ -20,6 +20,7 @@ export function getSubTopicListItems(subTopics, observer, unobserver) {
             isSubTopic: true,
             itemId: subTopicId,
             title: subTopic.sub_topic_title,
+            description: subTopic.sub_topic_description,
             canEdit: true,
             canDelete: true,
             observe: null,

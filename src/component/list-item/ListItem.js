@@ -81,6 +81,7 @@ export function ListItem(props) {
         isSubTopic: props.isSubTopic,
         itemId: props.itemId,
         title: props.title,
+        description: props.description,
         canEdit: props.canEdit,
         canDelete: props.canDelete
     });
@@ -125,7 +126,12 @@ export function ListItem(props) {
 
             const subTopicId = state.itemId
 
-            navigate(`${subTopicId}/meta`);
+            navigate(`${subTopicId}/meta`, {
+                state: {
+                    title: state.title,
+                    description: props.description
+                }
+            });
 
         }
 
