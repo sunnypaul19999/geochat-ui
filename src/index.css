@@ -32,3 +32,9 @@ body,
     border-width: 3px;
     border-style: solid;
 }
+
+.message-window {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}

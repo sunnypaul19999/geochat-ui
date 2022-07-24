@@ -1,9 +1,3 @@
-.message-window {
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-}
-
 .message-item .card {
     color: var(--on-surface-color-2);
     background-color: var(--surface-color-2);
