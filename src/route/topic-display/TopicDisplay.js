@@ -1,42 +1,60 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import { produce } from 'immer';
+
+import { useDisplayObserver } from "./DisplayObserver";
 
 import { LeftWindow } from "component/left-window/LeftWindow";
 
 import { getTopicListItems } from "./TopicListItems";
 
-import { getTopicsByPage } from "server/topic/GetTopicsByPage";
+import { fetchTopicPage } from "./TopicQuery";
 
-import produce from "immer";
+import { dispatchFetchNextTopicPageEvent } from "./TopicDisplayEvent";
 
-async function nextPage(topicPageNumber) {
 
-    try {
+function produceNextState(pageDetails, setState) {
 
-        const page = await getTopicsByPage(topicPageNumber);
+    setState(
+        produce(draft => {
 
-        let topics = {};
+            const fetchedTopicKeys = Object.keys(pageDetails.topics);
 
-        page.forEach(topic => {
+            //if topics in pageDetails has 1 or more topics
+            if (fetchedTopicKeys.length > 0) {
 
-            topics[topic.id] = {
-                ...topic
-            };
+                if (fetchedTopicKeys.length == 5) { draft.nextPageNumber = pageDetails.pageNumber + 1; }
+                else {
 
-        });
+                    //total items in page should be 5
+                    //i.e, the page number nextPageNumber is not filled
+                    //keep the page number to nextPageNumber to update it again
+                    if (fetchedTopicKeys.length < 5) { draft.pageNumber = pageDetails.pageNumber; }
+                }
 
-        return {
+                fetchedTopicKeys.forEach(fetchedTopicKey => {
 
-            pageNumber: topicPageNumber,
+                    if (draft.topics[fetchedTopicKey]) return;
 
-            topics: topics
+                    draft.topics[fetchedTopicKey] = pageDetails.topics[fetchedTopicKey];
 
-        };
+                });
 
-    } catch (e) {
+            }
 
-        //toast the error message here
+        })
+    );
 
-        return;
+}
+
+function onObservedElementVisible(observedElementEntries) {
+
+    console.log(`total observed elements = ${observedElementEntries.length}`);
+
+    if (observedElementEntries[0].isIntersecting) {
+
+        dispatchFetchNextTopicPageEvent(observedElementEntries[0].target);
+
     }
 
 }
@@ -45,44 +63,80 @@ async function nextPage(topicPageNumber) {
 export function TopicDisplay() {
 
     const [state, setState] = useState({
-        pageNumber: 1,
-        topics: null
+
+        nextPageNumber: 1,
+
+        topics: {},
+
     });
 
-    //next state callback
-    const nextState = useCallback(async () => {
 
-        const page = await nextPage(state.pageNumber);
+    const listItemDisplayRef = useRef();
 
-        if (page) {
 
-            setState(
-                produce(draft => {
+    const [observer, unobserver, disconnectObserver] = useDisplayObserver('topicListDisplay', onObservedElementVisible);
 
-                    draft.pageNumber = page.pageNumber;
 
-                    draft.topics = page.topics;
+    const nextPageDetails = useCallback(async () => {
 
-                })
-            );
+        const pageDetails = await fetchTopicPage(state.nextPageNumber);
+
+        produceNextState(pageDetails, setState);
+
+    }, [state]);
+
+
+    //this effects loads items on page: 1
+    useEffect(() => { nextPageDetails(); }, []);
+
+
+    const onFetchNextTopicPageEventHandler = async (event) => {
+
+        event.stopPropagation();
+
+        nextPageDetails();
+    }
+
+
+    useEffect(() => {
+
+        listItemDisplayRef.current.addEventListener('fetch-next-topic-page', onFetchNextTopicPageEventHandler);
+
+        return () => {
+
+            if (listItemDisplayRef.current) {
+
+                listItemDisplayRef.current.removeEventListener('fetch-next-topic-page', onFetchNextTopicPageEventHandler);
+
+            }
+
+            //disconnect the intersection observer
+            disconnectObserver();
 
         }
 
-    }, [state.pageNumber]);
+    }, [onFetchNextTopicPageEventHandler]);
 
-
-    //run on inital render
-    useEffect(() => {
-
-        nextState();
-
-    }, []);
 
 
     return (
-        <LeftWindow >
+        <LeftWindow>
 
-            {getTopicListItems(state.topics)}
+            <div
+                ref={listItemDisplayRef}
+                id="topicListDisplay"
+                className="list-item-display"
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    overflow: 'auto'
+                }}>
+
+                {
+                    getTopicListItems(state.topics, observer, unobserver)
+                }
+
+            </div>
 
         </LeftWindow>
     )

@@ -1,6 +1,6 @@
 import { ListItem } from "component/list-item/ListItem";
 
-export function getTopicListItems(topics) {
+export function getTopicListItems(topics, observer, unobserver) {
 
     //return spinner when topics is falsy
     if (!topics) return (<></>);
@@ -9,19 +9,31 @@ export function getTopicListItems(topics) {
 
     const topicIds = Object.keys(topics);
 
-    topicIds.forEach(topicId => {
+    const lastTopicIndex = topicIds.length - 1;
+
+    topicIds.forEach((topicId, index) => {
 
         const topic = topics[topicId];
 
-        listItems.push(
-            <ListItem
-                key={`topic_${topicId}`}
-                itemId={topicId}
-                title={topic.topic_title}
-                canEdit
-                canDelete
-            />
-        );
+        let props = {
+            key: `topic_${topicId}`,
+            itemId: topicId,
+            title: topic.topic_title,
+            canEdit: true,
+            canDelete: true,
+            observe: null,
+            unobserve: null
+        }
+
+        //observe the last topic
+        if (index === lastTopicIndex) {
+
+            props.observe = observer;
+            props.unobserve = unobserver;
+
+        }
+
+        listItems.push(<ListItem {...props} />);
 
     });
 

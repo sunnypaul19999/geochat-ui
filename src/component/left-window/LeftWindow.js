@@ -1,9 +1,10 @@
+import { useEffect } from "react";
+
 
 export function LeftWindow(props) {
 
-
     return (
-        <div className="left-window">
+        <div className="left-window" id="leftWindow">
 
             {props.children}
 

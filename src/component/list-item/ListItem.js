@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import 'stylesheet/list-item/list-item.css';
 
@@ -82,6 +82,27 @@ export function ListItem(props) {
         canDelete: props.canDelete
     });
 
+    const itemRef = useRef();
+
+    useEffect(() => {
+
+        if (props.observe) {
+
+
+            props.observe(itemRef.current);
+
+        }
+
+        return () => {
+
+            if (props.unobserve) {
+
+                //console.log(itemRef.current)
+                if (itemRef.current) props.unobserve(itemRef.current);
+            }
+        }
+    }, [])
+
     const onClickListItem = (event) => {
 
         event.stopPropagation();
@@ -90,7 +111,9 @@ export function ListItem(props) {
 
 
     return (
-        <div className="list-item" onClick={onClickListItem}>
+        <div
+            ref={itemRef}
+            className="list-item" onClick={onClickListItem}>
             <div className="card">
                 <div className="card-body">
                     <p className="card-title">
