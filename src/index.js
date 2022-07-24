@@ -12,6 +12,7 @@ import { MessageDisplay } from "route/meta-discuss/MetaDiscussDisplay";
 import { BrowserRouter } from "react-router-dom";
 import { LeftWindow } from "component/left-window/LeftWindow";
 import { MainUI } from "component/main-ui/MainUI";
+import { SubTopicInfoDisplay } from "route/sub-topic-info-display/SubTopicInfoDisplay";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 //<Route path='topic/:topicId/subTopic/:subTopicId/meta' element={<MessageDisplay />} />
@@ -27,7 +28,7 @@ root.render(
 
                     <Route path='geochat' element={<MainUI />}>
 
-                        <Route path='topic' element={<LeftWindow />}>
+                        <Route path='topic'>
 
                             <Route index element={<TopicDisplay />} />
 
@@ -35,7 +36,7 @@ root.render(
 
                                 <Route index element={<SubTopicDisplay />} />
 
-                                <Route path=':subTopicId/meta' element={<MessageDisplay />} />
+                                <Route path=':subTopicId/meta' element={<SubTopicInfoDisplay />} />
 
                             </Route>
 

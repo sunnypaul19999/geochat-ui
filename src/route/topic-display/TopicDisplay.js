@@ -11,6 +11,7 @@ import { getTopicListItems } from "./TopicListItems";
 import { fetchTopicPage } from "./TopicQuery";
 
 import { dispatchFetchNextTopicPageEvent } from "./TopicDisplayEvent";
+import { RightWindow } from "component/right-window/RightWindow";
 
 
 function produceNextState(pageDetails, setState) {
@@ -100,7 +101,11 @@ export function TopicDisplay() {
 
     useEffect(() => {
 
-        listItemDisplayRef.current.addEventListener('fetch-next-topic-page', onFetchNextTopicPageEventHandler);
+        if (listItemDisplayRef.current) {
+
+            listItemDisplayRef.current.addEventListener('fetch-next-topic-page', onFetchNextTopicPageEventHandler);
+
+        }
 
         return () => {
 
@@ -121,21 +126,29 @@ export function TopicDisplay() {
 
     return (
 
-        <div
-            ref={listItemDisplayRef}
-            id="topicListDisplay"
-            className="list-item-display"
-            style={{
-                width: '100%',
-                height: '100%',
-                overflow: 'auto'
-            }}>
+        <>
+            <LeftWindow>
 
-            {
-                getTopicListItems(state.topics, observer, unobserver)
-            }
+                <div
+                    ref={listItemDisplayRef}
+                    id="topicListDisplay"
+                    className="list-item-display"
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        overflow: 'auto'
+                    }}>
 
-        </div>
+                    {
+                        getTopicListItems(state.topics, observer, unobserver)
+                    }
+
+                </div>
+
+            </LeftWindow>
+
+            <RightWindow></RightWindow>
+        </>
 
     )
 }

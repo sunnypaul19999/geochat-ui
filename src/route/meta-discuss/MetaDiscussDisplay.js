@@ -135,24 +135,24 @@ export function MessageDisplay(props) {
 
 
     return (
-        <RightWindow>
 
-            <div
-                ref={messageDisplayRef}
-                id="messageDisplay"
-                className="message-display"
-                style={{
-                    width: '100%',
-                    height: '100%',
-                    overflow: 'auto'
-                }}>
 
-                {
-                    getMessageItems(state.messages, observer, unobserver)
-                }
+        <div
+            ref={messageDisplayRef}
+            id="messageDisplay"
+            className="message-display"
+            style={{
+                width: '100%',
+                height: '100%',
+                overflow: 'auto'
+            }}>
 
-            </div>
+            {
+                getMessageItems(state.messages, observer, unobserver)
+            }
 
-        </RightWindow>
+        </div>
+
+
     )
 }

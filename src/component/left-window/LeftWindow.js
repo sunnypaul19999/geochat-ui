@@ -4,12 +4,10 @@ import { Outlet } from "react-router-dom";
 export function LeftWindow(props) {
 
     return (
-        <>
-            <div className="left-window" id="leftWindow">
-                <Outlet />
-            </div>
+        <div className="left-window" id="leftWindow">
 
-            <RightWindow />
-        </>
+            {props.children}
+
+        </div>
     );
 }
