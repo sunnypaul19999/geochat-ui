@@ -55,7 +55,11 @@ class TopicListDisplayObserver {
         // console.log(`suscribe`);
         // console.log(element);
 
-        this.observer.observe(element);
+        if (element) {
+
+            this.observer.observe(element);
+
+        }
     }
 
     unobserveElement(element) {
@@ -63,7 +67,11 @@ class TopicListDisplayObserver {
         // console.log(`unsuscribe`);
         // console.log(element);
 
-        this.observer.unobserve(element);
+        if (element) {
+
+            this.observer.unobserve(element);
+
+        }
 
     }
 
