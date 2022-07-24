@@ -134,24 +134,24 @@ export function SubTopicDisplay(props) {
 
 
     return (
-        <LeftWindow>
 
-            <div
-                ref={listItemDisplayRef}
-                id="subTopicListDisplay"
-                className="list-item-display"
-                style={{
-                    width: '100%',
-                    height: '100%',
-                    overflow: 'auto'
-                }}>
 
-                {
-                    getSubTopicListItems(state.subTopics, observer, unobserver)
-                }
+        <div
+            ref={listItemDisplayRef}
+            id="subTopicListDisplay"
+            className="list-item-display"
+            style={{
+                width: '100%',
+                height: '100%',
+                overflow: 'auto'
+            }}>
 
-            </div>
+            {
+                getSubTopicListItems(state.subTopics, observer, unobserver)
+            }
 
-        </LeftWindow>
+        </div>
+
+
     )
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import 'stylesheet/list-item/list-item.css';
 
@@ -76,18 +77,25 @@ function ListItemActionToolbar(props) {
 export function ListItem(props) {
 
     const [state, setState] = useState({
+        isTopic: props.isTopic,
+        isSubTopic: props.isSubTopic,
         itemId: props.itemId,
         title: props.title,
         canEdit: props.canEdit,
         canDelete: props.canDelete
     });
 
+    const params = useParams();
+
+    const location = useLocation();
+
+    const navigate = useNavigate();
+
     const itemRef = useRef();
 
     useEffect(() => {
 
         if (props.observe) {
-
 
             props.observe(itemRef.current);
 
@@ -106,6 +114,20 @@ export function ListItem(props) {
     const onClickListItem = (event) => {
 
         event.stopPropagation();
+
+        if (state.isTopic) {
+
+            const topicId = state.itemId;
+
+            navigate(`${topicId}/subTopic`);
+
+        } else {
+
+            const subTopicId = state.itemId
+
+            navigate(`${subTopicId}/meta`);
+
+        }
 
     }
 

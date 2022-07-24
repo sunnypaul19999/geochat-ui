@@ -7,6 +7,13 @@ body,
     height: 100%;
 }
 
+.main-ui {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(197, 212, 210);
+}
 
 .left-window {
     width: 100%;
@@ -24,7 +31,6 @@ body,
 .right-window {
     width: inherit;
     height: inherit;
-    padding: 5px;
     overflow: auto;
     position: relative;
     background-color: var(--background-color-2);

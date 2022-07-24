@@ -1,3 +1,7 @@
+.message-item {
+    padding: 5px;
+}
+
 .message-item .card {
     color: var(--on-surface-color-2);
     background-color: var(--surface-color-2);

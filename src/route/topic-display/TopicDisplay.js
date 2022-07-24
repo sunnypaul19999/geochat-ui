@@ -120,24 +120,22 @@ export function TopicDisplay() {
 
 
     return (
-        <LeftWindow>
 
-            <div
-                ref={listItemDisplayRef}
-                id="topicListDisplay"
-                className="list-item-display"
-                style={{
-                    width: '100%',
-                    height: '100%',
-                    overflow: 'auto'
-                }}>
+        <div
+            ref={listItemDisplayRef}
+            id="topicListDisplay"
+            className="list-item-display"
+            style={{
+                width: '100%',
+                height: '100%',
+                overflow: 'auto'
+            }}>
 
-                {
-                    getTopicListItems(state.topics, observer, unobserver)
-                }
+            {
+                getTopicListItems(state.topics, observer, unobserver)
+            }
 
-            </div>
+        </div>
 
-        </LeftWindow>
     )
 }

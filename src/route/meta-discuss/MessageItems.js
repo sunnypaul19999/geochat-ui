@@ -20,7 +20,7 @@ export function getMessageItems(messages, observer, unobserver) {
 
         let props = {
             key: `meta_dicuss_message_${message.message_id}`,
-            messageId: `meta_dicuss_message_${message.message_id}`,
+            messageId: message.message_id,
             username: message.sender_username,
             message: message.message,
             observe: null,

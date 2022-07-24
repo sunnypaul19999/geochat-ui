@@ -17,6 +17,7 @@ export function getSubTopicListItems(subTopics, observer, unobserver) {
 
         let props = {
             key: `sub_topic_${subTopicId}`,
+            isSubTopic: true,
             itemId: subTopicId,
             title: subTopic.sub_topic_title,
             canEdit: true,

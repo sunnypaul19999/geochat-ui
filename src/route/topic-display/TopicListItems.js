@@ -17,6 +17,7 @@ export function getTopicListItems(topics, observer, unobserver) {
 
         let props = {
             key: `topic_${topicId}`,
+            isTopic: true,
             itemId: topicId,
             title: topic.topic_title,
             canEdit: true,

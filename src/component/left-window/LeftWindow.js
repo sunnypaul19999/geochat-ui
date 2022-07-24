@@ -1,11 +1,15 @@
+import { RightWindow } from "component/right-window/RightWindow";
+import { Outlet } from "react-router-dom";
 
 export function LeftWindow(props) {
 
     return (
-        <div className="left-window" id="leftWindow">
+        <>
+            <div className="left-window" id="leftWindow">
+                <Outlet />
+            </div>
 
-            {props.children}
-
-        </div>
+            <RightWindow />
+        </>
     );
 }
