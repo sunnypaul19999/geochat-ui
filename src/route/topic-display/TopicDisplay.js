@@ -146,9 +146,11 @@ export function TopicDisplay() {
                         getTopicListItems(state.topics, observer, unobserver)
                     }
 
+                    <br /><br /><br />
+
                 </div>
 
-                <BottomToolbar />
+                <BottomToolbar create />
 
             </LeftWindow>
 

@@ -1,9 +1,14 @@
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import 'stylesheet/bottom-ui-toolbar/bottom-ui-toolbar.css';
 
 
 export function BottomToolbar(props) {
+
+    const [state] = useState({
+        create: Boolean(props.create)
+    });
 
     const location = useLocation();
 
@@ -91,17 +96,33 @@ export function BottomToolbar(props) {
 
     }
 
+    const getCreateButton = () => {
+
+        let style = {
+            visibility: 'hidden'
+        }
+
+        if (state.create) {
+            style.visibility = 'visible';
+        }
+
+        return (
+            <span class="create-button" title="create" style={style}>
+                <span class="material-icons" onClick={onCreateButtonCLick}>
+                    add_circle_outline
+                </span>
+            </span>
+        );
+
+    }
+
     return (
         <div class="bottom-ui-toolbar position-absolute bottom-0 start-50 translate-middle">
             <div class="hstack gap-1 pt-1 rounded-pill justify-content-center">
 
                 {getBackButton()}
 
-                <span class="create-button" title="create">
-                    <span class="material-icons" onClick={onCreateButtonCLick}>
-                        add_circle_outline
-                    </span>
-                </span>
+                {getCreateButton()}
 
                 {getForwardButton()}
 

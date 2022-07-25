@@ -156,9 +156,11 @@ export function SubTopicDisplay(props) {
                         getSubTopicListItems(state.subTopics, observer, unobserver)
                     }
 
+                    <br /><br /><br />
+
                 </div>
 
-                <BottomToolbar />
+                <BottomToolbar create />
 
             </LeftWindow>
 
