@@ -39,14 +39,6 @@ export function MessageItem(props) {
 
     }, [state]);
 
-
-    const scrollMessageItemIntoView = () => {
-
-        props.scrollMessageItemIntoView();
-
-    }
-
-
     return (
         <div
             ref={messageItemRef}

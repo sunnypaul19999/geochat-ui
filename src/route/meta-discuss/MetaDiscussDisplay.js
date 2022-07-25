@@ -83,6 +83,8 @@ export function MessageDisplay(props) {
 
     });
 
+    const lastMessageItemRef = useRef();
+
 
     const messageDisplayRef = useRef();
 
@@ -93,8 +95,6 @@ export function MessageDisplay(props) {
     const nextPageDetails = useCallback(async () => {
 
         const pageDetails = await fetchMetaDiscussPage(state.topicId, state.subTopicId, state.nextPageNumber);
-
-
 
         produceNextState(pageDetails, setState);
 
@@ -117,6 +117,17 @@ export function MessageDisplay(props) {
         event.stopPropagation();
 
         console.log('message sent');
+
+        //dispatch 'fetch-next-meta-discuss-page' to fetch next-page or update the current page if not filled
+        dispatchFetchNextMetaDiscussPageEvent(event.currentTarget);
+
+        // const lastMessageElement = document.getElementById(lastMessageItemRef.current);
+
+        // // lastMessageElement.scrollIntoView();
+
+        // lastMessageElement.scroll({ top: lastMessageElement.getBoundingClientRect().bottom, behavior: 'smooth' });
+
+        // console.log(JSON.stringify(lastMessageElement.getBoundingClientRect().bottom, null, 2));
 
     }
 
@@ -145,8 +156,13 @@ export function MessageDisplay(props) {
     }, [onFetchNextMetaDiscussPageEventHandler, onMessageSendEventHandler]);
 
 
-    const onSendMessageScrollIntoView = () => {
+    const messageItems = () => {
 
+        const [messageItems, lastMessageElementId] = getMessageItems(state.messages, observer, unobserver);
+
+        lastMessageItemRef.current = lastMessageElementId;
+
+        return messageItems;
 
     }
 
@@ -165,7 +181,7 @@ export function MessageDisplay(props) {
                 }}>
 
                 {
-                    getMessageItems(state.messages, onSendMessageScrollIntoView, observer, unobserver)
+                    messageItems()
                 }
 
                 <br />

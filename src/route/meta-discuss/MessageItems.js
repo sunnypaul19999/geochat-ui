@@ -1,7 +1,7 @@
 import { ListItem } from "component/list-item/ListItem";
 import { MessageItem } from "component/message-item/MessageItem";
 
-export function getMessageItems(messages, onSendMessageScrollIntoView, observer, unobserver) {
+export function getMessageItems(messages, observer, unobserver) {
 
     //return spinner when messages is falsy
     if (!messages) return (<></>);
@@ -12,6 +12,8 @@ export function getMessageItems(messages, onSendMessageScrollIntoView, observer,
 
     const lastMessageIndex = messageIds.length - 1;
 
+    let lastMessageElementId;
+
     messageIds.forEach((messageId, index) => {
 
         const message = messages[messageId];
@@ -21,8 +23,6 @@ export function getMessageItems(messages, onSendMessageScrollIntoView, observer,
             messageId: message.message_id,
             username: message.sender_username,
             message: message.message,
-            //scrollIntoView: false,
-            scrollMessageItemIntoView: null,
             observe: null,
             unobserve: null,
         }
@@ -30,10 +30,10 @@ export function getMessageItems(messages, onSendMessageScrollIntoView, observer,
         //observe the last message
         if (index === lastMessageIndex) {
 
-            //props.scrollIntoView = true;
-            props.scrollMessageItemIntoView = onSendMessageScrollIntoView;
             props.observe = observer;
             props.unobserve = unobserver;
+
+            lastMessageElementId = props.messageId;
 
         }
 
@@ -41,5 +41,5 @@ export function getMessageItems(messages, onSendMessageScrollIntoView, observer,
 
     });
 
-    return messageItem;
+    return [messageItem, lastMessageElementId];
 }
