@@ -24,18 +24,18 @@ export function SubTopicInfoDisplay(props) {
         <>
             <LeftWindow>
 
-                <div class="sub-topic-info-display">
-                    <div class="sub-topic-heading-container mb-1">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title text-wrap">{state.title}</h4>
+                <div className="sub-topic-info-display">
+                    <div className="sub-topic-heading-container mb-1">
+                        <div className="card">
+                            <div className="card-body">
+                                <h4 className="card-title text-wrap">{state.title}</h4>
                             </div>
                         </div>
                     </div>
-                    <div class="sub-topic-description-container">
-                        <div class="card p-2">
-                            <div class="card-body p-0">
-                                <p class="card-text text-wrap">{state.description}</p>
+                    <div className="sub-topic-description-container">
+                        <div className="card p-2">
+                            <div className="card-body p-0">
+                                <p className="card-text text-wrap">{state.description}</p>
                             </div>
                         </div>
                     </div>

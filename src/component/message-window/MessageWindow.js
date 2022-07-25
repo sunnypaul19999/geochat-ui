@@ -1,7 +1,6 @@
 
 function MessageWindow(props) {
 
-
     return (
         <div class="message-window">
 

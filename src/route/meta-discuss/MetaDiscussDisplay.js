@@ -12,6 +12,7 @@ import { fetchMetaDiscussPage } from "./MetaDiscussQuery";
 
 import { dispatchFetchNextMetaDiscussPageEvent } from "./MetaDiscussEvent";
 import { useParams } from "react-router-dom";
+import { MessageInput } from "component/message-input/MessageInput";
 
 
 function produceNextState(pageDetails, setState) {
@@ -136,23 +137,29 @@ export function MessageDisplay(props) {
 
     return (
 
+        <>
+            <div
+                ref={messageDisplayRef}
+                id="messageDisplay"
+                className="message-display"
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    overflow: 'auto'
+                }}>
 
-        <div
-            ref={messageDisplayRef}
-            id="messageDisplay"
-            className="message-display"
-            style={{
-                width: '100%',
-                height: '100%',
-                overflow: 'auto'
-            }}>
+                {
+                    getMessageItems(state.messages, observer, unobserver)
+                }
 
-            {
-                getMessageItems(state.messages, observer, unobserver)
-            }
+                <br />
+                <br />
+                <br />
 
-        </div>
+            </div>
 
+            <MessageInput />
+        </>
 
     )
 }
