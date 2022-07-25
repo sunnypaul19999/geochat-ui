@@ -1,0 +1,33 @@
+.hover-text-input .hover-text-input-area .form-floating {
+    position: relative;
+}
+
+.hover-text-input .hover-text-input-area .form-floating .letter-count {
+    bottom: 10px;
+    right: 10px;
+    position: absolute;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 3px 8px 3px 8px;
+    z-index: 10;
+    user-select: none;
+}
+
+.hover-text-input .hover-text-input-area .form-floating .letter-count .remaining-letters {
+    color: var(--on-surface-color-1-dark);
+}
+
+
+.hover-text-input .hover-text-input-area .form-floating .letter-count .remaining-letters.exceeded {
+    font-weight: bold;
+    color: var(--error-color-dark);
+}
+
+.hover-text-input .hover-text-input-area .form-floating .letter-count .divider {
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.hover-text-input .hover-text-input-area .form-floating .letter-count .total-letters {
+    font-weight: bold;
+}
