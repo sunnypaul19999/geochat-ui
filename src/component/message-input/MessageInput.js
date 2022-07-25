@@ -105,8 +105,12 @@ export function MessageInput(props) {
 
         if (state.messageTextareaHasFocus | state.messageTextInputWrapperHasMouseOver) {
 
+            messageTextInputWrapperRef.current?.classList.add('traslateXSendIcon');
+
             return true;
         }
+
+        messageTextInputWrapperRef.current?.classList.remove('traslateXSendIcon');
 
         return false
 
@@ -131,7 +135,7 @@ export function MessageInput(props) {
         <div
             ref={messageTextInputWrapperRef}
             id="messageTextInputWrapper"
-            className={`message-text-input ${(isTranslated()) ? 'traslateXSendIcon' : ''}`}
+            className='message-text-input'
             onMouseOver={onMouseOverMessageTextInputWrapper}
             onMouseOut={onMouseOutMessageTextInputWrapper}
             key={messageTextInputWrapperKey()}>

@@ -145,6 +145,11 @@ export function MessageDisplay(props) {
     }, [onFetchNextMetaDiscussPageEventHandler, onMessageSendEventHandler]);
 
 
+    const onSendMessageScrollIntoView = () => {
+
+
+    }
+
 
     return (
 
@@ -160,7 +165,7 @@ export function MessageDisplay(props) {
                 }}>
 
                 {
-                    getMessageItems(state.messages, observer, unobserver)
+                    getMessageItems(state.messages, onSendMessageScrollIntoView, observer, unobserver)
                 }
 
                 <br />
