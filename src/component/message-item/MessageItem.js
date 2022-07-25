@@ -19,7 +19,11 @@ export function MessageItem(props) {
     useEffect(() => {
 
         if (props.observe) {
+
+            //messageItemRef.current.scrollIntoView();
+
             props.observe(messageItemRef.current);
+
         }
 
 

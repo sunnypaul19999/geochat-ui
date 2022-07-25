@@ -77,7 +77,7 @@ class TopicListDisplayObserver {
 
     disconnectObserver() {
 
-        console.log('disconnectObserver');
+        //console.log('disconnectObserver');
         this.observer.disconnect();
 
     }

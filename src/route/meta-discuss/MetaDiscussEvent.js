@@ -14,4 +14,19 @@ function dispatchFetchNextMetaDiscussPageEvent(targetElement) {
 }
 
 
-export { dispatchFetchNextMetaDiscussPageEvent };
+//Dispatches event 'message-send-event'
+//This event is used to notification for when the message is send
+function dispatchMessageSendEvent(targetElement) {
+
+    const event = new Event('message-send-event', {
+        bubbles: true,
+        cancelable: true,
+
+    });
+
+    targetElement.dispatchEvent(event);
+
+}
+
+
+export { dispatchFetchNextMetaDiscussPageEvent, dispatchMessageSendEvent };

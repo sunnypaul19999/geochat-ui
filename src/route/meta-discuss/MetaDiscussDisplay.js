@@ -51,7 +51,7 @@ function produceNextState(pageDetails, setState) {
 
 function onObservedElementVisible(observedElementEntries) {
 
-    console.log(`total observed elements = ${observedElementEntries.length}`);
+    //console.log(`total observed elements = ${observedElementEntries.length}`);
 
     if (observedElementEntries[0].isIntersecting) {
 
@@ -112,10 +112,20 @@ export function MessageDisplay(props) {
         nextPageDetails();
     }
 
+    const onMessageSendEventHandler = (event) => {
+
+        event.stopPropagation();
+
+        console.log('message sent');
+
+    }
+
 
     useEffect(() => {
 
         messageDisplayRef.current.addEventListener('fetch-next-meta-discuss-page', onFetchNextMetaDiscussPageEventHandler);
+
+        messageDisplayRef.current.addEventListener('message-send-event', onMessageSendEventHandler);
 
 
         return () => {
@@ -124,6 +134,7 @@ export function MessageDisplay(props) {
 
                 messageDisplayRef.current.removeEventListener('fetch-next-meta-discuss-page', onFetchNextMetaDiscussPageEventHandler);
 
+                messageDisplayRef.current.removeEventListener('message-send-event', onMessageSendEventHandler);
             }
 
             //disconnect the intersection observer
@@ -131,7 +142,7 @@ export function MessageDisplay(props) {
 
         }
 
-    }, [onFetchNextMetaDiscussPageEventHandler]);
+    }, [onFetchNextMetaDiscussPageEventHandler, onMessageSendEventHandler]);
 
 
 
@@ -156,9 +167,10 @@ export function MessageDisplay(props) {
                 <br />
                 <br />
 
+                <MessageInput />
             </div>
 
-            <MessageInput />
+
         </>
 
     )

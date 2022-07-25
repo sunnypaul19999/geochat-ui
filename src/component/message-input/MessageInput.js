@@ -1,6 +1,7 @@
 import produce from 'immer';
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { dispatchMessageSendEvent } from 'route/meta-discuss/MetaDiscussEvent';
 import { sendMetaMessage } from 'route/meta-discuss/MetaDiscussQuery';
 
 import 'stylesheet/message-input/message-input-media-query.css';
@@ -87,6 +88,8 @@ export function MessageInput(props) {
             if (message.length > 0) {
 
                 await sendMetaMessage(params.topicId, params.subTopicId, message);
+
+                dispatchMessageSendEvent(messageInputRef.current);
 
                 messageInputRef.current.value = '';
 

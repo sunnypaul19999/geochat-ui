@@ -10,8 +10,6 @@ export function getMessageItems(messages, observer, unobserver) {
 
     const messageIds = Object.keys(messages);
 
-
-
     const lastMessageIndex = messageIds.length - 1;
 
     messageIds.forEach((messageId, index) => {
@@ -23,13 +21,15 @@ export function getMessageItems(messages, observer, unobserver) {
             messageId: message.message_id,
             username: message.sender_username,
             message: message.message,
+            scrollIntoView: false,
             observe: null,
-            unobserve: null
+            unobserve: null,
         }
 
         //observe the last message
         if (index === lastMessageIndex) {
 
+            props.scrollIntoView = true;
             props.observe = observer;
             props.unobserve = unobserver;
 
