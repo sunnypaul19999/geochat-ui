@@ -98,7 +98,14 @@ export function MessageDisplay(props) {
 
         produceNextState(pageDetails, setState);
 
+        // setTimeout(
+        //     nextPageDetails,
+        //     2000
+        // );
+
     }, [state]);
+
+
 
 
     //this effects loads items on page: 1
@@ -122,12 +129,6 @@ export function MessageDisplay(props) {
         dispatchFetchNextMetaDiscussPageEvent(event.currentTarget);
 
         // const lastMessageElement = document.getElementById(lastMessageItemRef.current);
-
-        // // lastMessageElement.scrollIntoView();
-
-        // lastMessageElement.scroll({ top: lastMessageElement.getBoundingClientRect().bottom, behavior: 'smooth' });
-
-        // console.log(JSON.stringify(lastMessageElement.getBoundingClientRect().bottom, null, 2));
 
     }
 

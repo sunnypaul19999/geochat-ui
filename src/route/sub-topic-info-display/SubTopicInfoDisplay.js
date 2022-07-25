@@ -1,3 +1,4 @@
+import { BottomToolbar } from "component/bottom-toolbar/BottomToolbar";
 import { LeftWindow } from "component/left-window/LeftWindow";
 import { RightWindow } from "component/right-window/RightWindow";
 import { useState } from "react";
@@ -40,6 +41,8 @@ export function SubTopicInfoDisplay(props) {
                         </div>
                     </div>
                 </div>
+
+                <BottomToolbar />
 
             </LeftWindow>
 

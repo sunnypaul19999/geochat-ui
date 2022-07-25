@@ -13,6 +13,7 @@ import { fetchTopicPage } from "./TopicQuery";
 import { dispatchFetchNextTopicPageEvent } from "./TopicDisplayEvent";
 
 import { RightWindow } from "component/right-window/RightWindow";
+import { BottomToolbar } from "component/bottom-toolbar/BottomToolbar";
 
 
 function produceNextState(pageDetails, setState) {
@@ -146,6 +147,8 @@ export function TopicDisplay() {
                     }
 
                 </div>
+
+                <BottomToolbar />
 
             </LeftWindow>
 
