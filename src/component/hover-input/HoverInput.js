@@ -61,7 +61,12 @@ class HoverTextStorage {
 
 function useHoverInputTextState(textStateId) {
 
-    const getText = () => {
+    const getText = (inputTextValueId) => {
+
+        if (inputTextValueId) {
+
+            return HoverTextStorage.getText(inputTextValueId);
+        }
 
         return HoverTextStorage.getText(textStateId);
 
@@ -127,6 +132,7 @@ export function HoverInput(props) {
     const [state, setState] = useState({
         id: props.id,
         serverItemId: props.serverItemId,
+        previousInputTextValueId: props.previousInputTextValueId,
         isContinued: props.isContinued,
         title: props.title,
         defaultText: props.defaultText,
@@ -192,7 +198,7 @@ export function HoverInput(props) {
     const onHoverInputForward = (event) => {
         event.stopPropagation();
 
-        props.onHoverInputForward(event);
+        props.onHoverInputForward(event, state.id);
     }
 
 
@@ -216,7 +222,14 @@ export function HoverInput(props) {
     const onHoverInputSubmit = (event) => {
         event.stopPropagation();
 
-        props.onHoverInputSubmit(getText(), state.serverItemId);
+        if (state.previousInputTextValueId) {
+
+            props.onHoverInputSubmit(getText(state.previousInputTextValueId), getText(), state.serverItemId);
+
+        } else {
+
+            props.onHoverInputSubmit(getText(), state.serverItemId);
+        }
     }
 
     const submitButton = () => {

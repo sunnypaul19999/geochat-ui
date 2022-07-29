@@ -17,6 +17,7 @@ import { dispatchFetchNextSubTopicPageEvent } from "./SubTopicDisplayEvent";
 import { RightWindow } from "component/right-window/RightWindow";
 import { BottomToolbar } from "component/bottom-toolbar/BottomToolbar";
 import { HoverInput } from "component/hover-input/HoverInput";
+import { updateSubTopic } from "server/subtopic/UpdateSubTopic";
 
 
 
@@ -91,11 +92,12 @@ export function SubTopicDisplay(props) {
         hoverInputTextarea: {
             title: '',
             mode: hoverInputAreaModes.create,
+            serverItemId: '',
             defaultText: {
                 title: '',
                 description: ''
             },
-            serverItemId: '',
+            subTopicTitleInputTextValueId: '',
             stage: 1,
             stages: 2,
             isContinued: false,
@@ -193,7 +195,7 @@ export function SubTopicDisplay(props) {
         );
     }
 
-    const onHoverInputForward = (event) => {
+    const onHoverInputForward = (event, subTopicTitleInputTextValueId) => {
         //to go to stage 2
 
         event.stopPropagation();
@@ -202,6 +204,8 @@ export function SubTopicDisplay(props) {
             produce(draft => {
 
                 draft.hoverInputTextarea.stage = 2;
+
+                draft.hoverInputTextarea.subTopicTitleInputTextValueId = subTopicTitleInputTextValueId;
 
             })
         );
@@ -219,8 +223,15 @@ export function SubTopicDisplay(props) {
         );
     }
 
-    const onHoverInputSubmit = (event) => {
-        event.stopPropagation();
+    const onHoverInputSubmit = async (subTopicTitle, subTopicDescription, subTopicId) => {
+
+        if (state.hoverInputTextarea.mode === hoverInputAreaModes.create) {
+
+
+        } else {
+
+            await updateSubTopic(state.topicId, subTopicId, subTopicTitle, subTopicDescription);
+        }
     }
 
     const hoverInput = () => {
@@ -286,6 +297,7 @@ export function SubTopicDisplay(props) {
                         id={idAndKey}
                         serverItemId={state.hoverInputTextarea.serverItemId}
                         isContinued={state.hoverInputTextarea.isContinued}
+                        previousInputTextValueId={state.hoverInputTextarea.subTopicTitleInputTextValueId}
                         title={hoverInputTextareaTitle}
                         defaultText={state.hoverInputTextarea.defaultText.description}
                         large
