@@ -203,8 +203,6 @@ export function SubTopicDisplay(props) {
 
                 draft.hoverInputTextarea.stage = 2;
 
-                draft.hoverInputTextarea.isContinued = true;
-
             })
         );
     }
