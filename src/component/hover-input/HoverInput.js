@@ -1,5 +1,5 @@
 import produce from "immer";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import 'stylesheet/hover-text-input/hover-text-input-media-query.css';
 
@@ -63,7 +63,7 @@ function useHoverInputTextState(textStateId) {
 
     const getText = () => {
 
-        console.log(textStateId);
+        //console.log(textStateId);
 
         return HoverTextStorage.getText(textStateId);
 
@@ -79,7 +79,7 @@ function useHoverInputTextState(textStateId) {
 
         event.stopPropagation();
 
-        console.log(event.target.value.length);
+        //console.log(event.target.value.length);
 
         setState(
             produce(draft => {
@@ -119,7 +119,6 @@ export function HoverInput(props) {
     const [state, setState] = useState({
         id: props.id,
         title: props.title,
-        currentLetterCount: 0,
         maxLetterCount: props.maxLetterCount,
         isCancleable: props.cancleable,
         hasHistoryBackward: props.hasHistoryBackward,
@@ -131,6 +130,17 @@ export function HoverInput(props) {
 
     const textareaRef = useRef();
 
+    const isNotInputValid = () => {
+
+        console.log(getLetterCount());
+
+        if (getLetterCount() > state.maxLetterCount) {
+
+            return true;
+        }
+
+        return false;
+    }
 
     const onHoverInputCancel = (event) => {
         event.stopPropagation();
@@ -178,7 +188,12 @@ export function HoverInput(props) {
     const forwardButton = () => {
 
         return (
-            <button type="button" name="hoverTextareaInputActionSubmit" className="btn next" onClick={onHoverInputForward}>
+            <button
+                type="button"
+                name="hoverTextareaInputActionSubmit"
+                className="btn next"
+                onClick={onHoverInputForward}
+                disabled={isNotInputValid()}>
                 <span className="button-text">Next</span>
                 <span className="next-icon material-symbols-outlined">
                     arrow_forward_ios
@@ -207,7 +222,7 @@ export function HoverInput(props) {
                 type="button"
                 name="hoverTextareaInputActionSubmit"
                 className="btn submit"
-                disabled={disabled}
+                disabled={isNotInputValid()}
                 onClick={onHoverInputSubmit}>
 
                 <span className="button-text">Submit</span>
