@@ -95,7 +95,7 @@ export function SubTopicDisplay(props) {
                 title: '',
                 description: ''
             },
-            customId: '',
+            serverItemId: '',
             stage: 1,
             stages: 2,
             isContinued: false,
@@ -159,7 +159,7 @@ export function SubTopicDisplay(props) {
         setState(
             produce(draft => {
 
-                draft.hoverInputTextarea.customId = `createSubTopicButtonId${listItemDisplayRef.current.getAttribute('id')}`;
+                draft.hoverInputTextarea.serverItemId = `createSubTopicButtonId${listItemDisplayRef.current.getAttribute('id')}`;
 
                 draft.hoverInputTextarea.mode = hoverInputAreaModes.create;
 
@@ -228,7 +228,7 @@ export function SubTopicDisplay(props) {
         if (state.hoverInputTextarea.display) {
 
             let hoverInputTextareaTitle = '';
-            let id = '';
+            let idAndKey = '';
 
             //input in two stages
 
@@ -236,21 +236,24 @@ export function SubTopicDisplay(props) {
 
                 //input on 1st stage
 
+                idAndKey = `${state.hoverInputTextarea.mode.description}:topicId${state.topicId}`;
                 if (state.hoverInputTextarea.mode === hoverInputAreaModes.create) {
 
                     hoverInputTextareaTitle = 'Subtopic Title';
 
                 } else {
 
+                    idAndKey = `${idAndKey}:subTopicId${state.hoverInputTextarea.serverItemId}`;
                     hoverInputTextareaTitle = 'Edit Subtopic Title';
                 }
 
-                id = `${state.hoverInputTextarea.mode.description}${state.hoverInputTextarea.customId}subTopicHoverInputTextareaKeyStage1Stages2`.toLowerCase();
+                idAndKey = `${idAndKey}:subTopicHoverInputTextareaKeyStage1Stages2`.toLowerCase();
 
                 return (
                     <HoverInput
-                        key={id}
-                        id={id}
+                        key={idAndKey}
+                        id={idAndKey}
+                        serverItemId={state.hoverInputTextarea.serverItemId}
                         isContinued={state.hoverInputTextarea.isContinued}
                         title={hoverInputTextareaTitle}
                         defaultText={state.hoverInputTextarea.defaultText.title}
@@ -264,21 +267,24 @@ export function SubTopicDisplay(props) {
 
                 //input on 2nd stage
 
+                idAndKey = `${state.hoverInputTextarea.mode.description}:topicId${state.topicId}`;
                 if (state.hoverInputTextarea.mode === hoverInputAreaModes.create) {
 
                     hoverInputTextareaTitle = 'Subtopic Description';
 
                 } else {
 
+                    idAndKey = `${idAndKey}:subTopicId${state.hoverInputTextarea.serverItemId}`;
                     hoverInputTextareaTitle = 'Edit Subtopic Description';
                 }
 
-                id = `${state.hoverInputTextarea.mode.description}${state.hoverInputTextarea.customId}subTopicHoverInputTextareaKeyStage2Stages2`.toLowerCase();
+                idAndKey = `${idAndKey}:subTopicHoverInputTextareaKeyStage2Stages2`.toLowerCase();
 
                 return (
                     <HoverInput
-                        key={id}
-                        id={id}
+                        key={idAndKey}
+                        id={idAndKey}
+                        serverItemId={state.hoverInputTextarea.serverItemId}
                         isContinued={state.hoverInputTextarea.isContinued}
                         title={hoverInputTextareaTitle}
                         defaultText={state.hoverInputTextarea.defaultText.description}
@@ -306,7 +312,7 @@ export function SubTopicDisplay(props) {
         setState(
             produce(draft => {
 
-                draft.hoverInputTextarea.customId = `serverItemId${serverItemId}`;
+                draft.hoverInputTextarea.serverItemId = serverItemId;
 
                 draft.hoverInputTextarea.mode = hoverInputAreaModes.edit;
 
