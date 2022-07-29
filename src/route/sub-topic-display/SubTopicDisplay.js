@@ -98,7 +98,8 @@ export function SubTopicDisplay(props) {
             customId: '',
             stage: 1,
             stages: 2,
-            display: false
+            isContinued: false,
+            display: false,
         }
 
     });
@@ -168,6 +169,8 @@ export function SubTopicDisplay(props) {
 
                 draft.hoverInputTextarea.stage = 1;
 
+                draft.hoverInputTextarea.isContinued = false;
+
                 draft.hoverInputTextarea.display = true;
 
             })
@@ -184,6 +187,8 @@ export function SubTopicDisplay(props) {
 
                 draft.hoverInputTextarea.stage = 1;
 
+                draft.hoverInputTextarea.isContinued = true;
+
             })
         );
     }
@@ -197,6 +202,8 @@ export function SubTopicDisplay(props) {
             produce(draft => {
 
                 draft.hoverInputTextarea.stage = 2;
+
+                draft.hoverInputTextarea.isContinued = true;
 
             })
         );
@@ -246,6 +253,7 @@ export function SubTopicDisplay(props) {
                     <HoverInput
                         key={id}
                         id={id}
+                        isContinued={state.hoverInputTextarea.isContinued}
                         title={hoverInputTextareaTitle}
                         defaultText={state.hoverInputTextarea.defaultText.title}
                         cancleable
@@ -273,6 +281,7 @@ export function SubTopicDisplay(props) {
                     <HoverInput
                         key={id}
                         id={id}
+                        isContinued={state.hoverInputTextarea.isContinued}
                         title={hoverInputTextareaTitle}
                         defaultText={state.hoverInputTextarea.defaultText.description}
                         large
@@ -292,11 +301,9 @@ export function SubTopicDisplay(props) {
 
     const onEditSubTopicButtonClick = async (serverItemId) => {
 
-        console.log(`subtopic item id for edit ${serverItemId}`);
+        // console.log(`subtopic item id for edit ${serverItemId}`);
 
         const subTopic = await fetchSubTopicById(state.topicId, serverItemId);
-
-        console.log(subTopic);
 
         setState(
             produce(draft => {
@@ -310,6 +317,8 @@ export function SubTopicDisplay(props) {
                 draft.hoverInputTextarea.defaultText.description = subTopic.sub_topic_description;
 
                 draft.hoverInputTextarea.stage = 1;
+
+                draft.hoverInputTextarea.isContinued = false;
 
                 draft.hoverInputTextarea.display = true;
 

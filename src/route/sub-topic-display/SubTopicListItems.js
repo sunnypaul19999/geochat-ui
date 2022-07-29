@@ -26,7 +26,7 @@ export function getSubTopicListItems(subTopics, onEditSubTopic, onDeleteSubTopic
             canDelete: true,
             onDelete: onDeleteSubTopic,
             observe: null,
-            unobserve: null
+            unobserve: null,
         }
 
         //observe the last sub-topic

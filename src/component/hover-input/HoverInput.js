@@ -1,5 +1,5 @@
 import produce from "immer";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 import 'stylesheet/hover-text-input/hover-text-input-media-query.css';
 
@@ -124,6 +124,7 @@ export function HoverInput(props) {
 
     const [state, setState] = useState({
         id: props.id,
+        isContinued: props.isContinued,
         title: props.title,
         defaultText: props.defaultText,
         maxLetterCount: props.maxLetterCount,
@@ -255,14 +256,18 @@ export function HoverInput(props) {
 
     useEffect(() => {
 
+        console.log(state.isContinued);
 
         if (typeof state.defaultText === 'string') {
 
             if (state.defaultText.length > 0) {
 
-                setText(state.defaultText);
+                if (!state.isContinued) {
 
-                console.log(state.defaultText);
+                    setText(state.defaultText);
+                }
+
+                // console.log(state.defaultText);
             }
 
         }
