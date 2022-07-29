@@ -94,8 +94,8 @@ export const subTopicEndpointConfig = {
         method: 'PUT',
 
         body: {
-            "sub_topic_title": null,
-            "sub_topic_description": null
+            sub_topic_title: null,
+            sub_topic_description: null
         },
 
         response: {}
