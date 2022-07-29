@@ -63,8 +63,6 @@ function useHoverInputTextState(textStateId) {
 
     const getText = () => {
 
-        //console.log(textStateId);
-
         return HoverTextStorage.getText(textStateId);
 
     }
@@ -79,11 +77,10 @@ function useHoverInputTextState(textStateId) {
 
         event.stopPropagation();
 
-        //console.log(event.target.value.length);
-
         setState(
             produce(draft => {
 
+                //textRef.current.text = event.target.value;
                 HoverTextStorage.setText(textStateId, event.target.value);
 
                 draft.letterCount = event.target.value.length;
@@ -132,7 +129,7 @@ export function HoverInput(props) {
 
     const isNotInputValid = () => {
 
-        console.log(getLetterCount());
+        //console.log(getLetterCount());
 
         if (getLetterCount() > state.maxLetterCount) {
 
