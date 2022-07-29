@@ -141,6 +141,8 @@ export function ListItem(props) {
     const onEditListItem = (event) => {
         event.stopPropagation();
 
+        //console.trace(state.serverItemId);
+
         props.onEdit(state.serverItemId);
     }
 

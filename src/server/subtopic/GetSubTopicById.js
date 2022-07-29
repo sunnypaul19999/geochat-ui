@@ -4,9 +4,9 @@ import { registerGeoPoint } from "server/geopoint/RegisterGeoPoint";
 import { subTopicEndpointConfig } from "./SubTopicEndpointConfig";
 
 
-function createRequest(subTopicId) {
+function createRequest(topicId, subTopicId) {
 
-    return axios.get(subTopicEndpointConfig.getById.uri(subTopicId), {
+    return axios.get(subTopicEndpointConfig.getById.uri(topicId, subTopicId), {
 
         withCredentials: true,
 
@@ -24,14 +24,14 @@ function createRequest(subTopicId) {
 }
 
 
-export async function getSubTopicById(subTopicId) {
+export async function getSubTopicById(topicId, subTopicId) {
 
     try {
 
         //register geoPoint on every request
         await registerGeoPoint();
 
-        const request = await createRequest(subTopicId);
+        const request = await createRequest(topicId, subTopicId);
 
         return request.data.subtopic;
 

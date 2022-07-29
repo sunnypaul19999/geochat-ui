@@ -8,7 +8,7 @@ import { useDisplayObserver } from "route/DisplayObserver";
 
 import { LeftWindow } from "component/left-window/LeftWindow";
 
-import { fetchSubTopicPage } from "./SubTopicQuery";
+import { fetchSubTopicById, fetchSubTopicPage } from "./SubTopicQuery";
 
 import { getSubTopicListItems } from "./SubTopicListItems";
 
@@ -17,6 +17,7 @@ import { dispatchFetchNextSubTopicPageEvent } from "./SubTopicDisplayEvent";
 import { RightWindow } from "component/right-window/RightWindow";
 import { BottomToolbar } from "component/bottom-toolbar/BottomToolbar";
 import { HoverInput } from "component/hover-input/HoverInput";
+
 
 
 
@@ -90,6 +91,10 @@ export function SubTopicDisplay(props) {
         hoverInputTextarea: {
             title: '',
             mode: hoverInputAreaModes.create,
+            defaultText: {
+                title: '',
+                description: ''
+            },
             customId: '',
             stage: 1,
             stages: 2,
@@ -154,9 +159,14 @@ export function SubTopicDisplay(props) {
             produce(draft => {
 
                 draft.hoverInputTextarea.customId = `createSubTopicButtonId${listItemDisplayRef.current.getAttribute('id')}`;
+
                 draft.hoverInputTextarea.mode = hoverInputAreaModes.create;
 
-                draft.hoverInputTextarea.defaultText = '';
+                draft.hoverInputTextarea.defaultText.title = '';
+
+                draft.hoverInputTextarea.defaultText.description = '';
+
+                draft.hoverInputTextarea.stage = 1;
 
                 draft.hoverInputTextarea.display = true;
 
@@ -237,6 +247,7 @@ export function SubTopicDisplay(props) {
                         key={id}
                         id={id}
                         title={hoverInputTextareaTitle}
+                        defaultText={state.hoverInputTextarea.defaultText.title}
                         cancleable
                         onHoverInputCancel={onHoverInputCancel}
                         hasHistoryForward
@@ -263,6 +274,7 @@ export function SubTopicDisplay(props) {
                         key={id}
                         id={id}
                         title={hoverInputTextareaTitle}
+                        defaultText={state.hoverInputTextarea.defaultText.description}
                         large
                         hasHistoryBackward
                         onHoverInputBack={onHoverInputBack}
@@ -278,17 +290,26 @@ export function SubTopicDisplay(props) {
     }
 
 
-    const onEditSubTopicButtonClick = (serverItemId) => {
+    const onEditSubTopicButtonClick = async (serverItemId) => {
 
         console.log(`subtopic item id for edit ${serverItemId}`);
+
+        const subTopic = await fetchSubTopicById(state.topicId, serverItemId);
+
+        console.log(subTopic);
 
         setState(
             produce(draft => {
 
                 draft.hoverInputTextarea.customId = `serverItemId${serverItemId}`;
+
                 draft.hoverInputTextarea.mode = hoverInputAreaModes.edit;
 
-                draft.hoverInputTextarea.defaultText = '';
+                draft.hoverInputTextarea.defaultText.title = subTopic.sub_topic_title;
+
+                draft.hoverInputTextarea.defaultText.description = subTopic.sub_topic_description;
+
+                draft.hoverInputTextarea.stage = 1;
 
                 draft.hoverInputTextarea.display = true;
 
