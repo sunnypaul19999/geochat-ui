@@ -75,6 +75,8 @@ topicId - topic id of subtopic
 
 export function SubTopicDisplay(props) {
 
+    const hoverInputAreaModes = { create: Symbol.for('createSubTopic'), edit: Symbol.for('editSubTopic') }
+
     const { topicId } = useParams();
 
     const [state, setState] = useState({
@@ -86,6 +88,9 @@ export function SubTopicDisplay(props) {
         subTopics: {},
 
         hoverInputTextarea: {
+            title: '',
+            mode: hoverInputAreaModes.create,
+            customId: '',
             stage: 1,
             stages: 2,
             display: false
@@ -148,6 +153,8 @@ export function SubTopicDisplay(props) {
         setState(
             produce(draft => {
 
+                draft.hoverInputTextarea.customId = `createSubTopicButtonId${listItemDisplayRef.current.getAttribute('id')}`;
+                draft.hoverInputTextarea.mode = hoverInputAreaModes.create;
                 draft.hoverInputTextarea.display = true;
 
             })
@@ -155,9 +162,9 @@ export function SubTopicDisplay(props) {
     }
 
     const onHoverInputBack = (event) => {
-        event.stopPropagation();
+        //to go back to stage 1
 
-        //console.log('onHoverInputBack');
+        event.stopPropagation();
 
         setState(
             produce(draft => {
@@ -169,8 +176,9 @@ export function SubTopicDisplay(props) {
     }
 
     const onHoverInputForward = (event) => {
-        event.stopPropagation();
+        //to go to stage 2
 
+        event.stopPropagation();
 
         setState(
             produce(draft => {
@@ -201,53 +209,65 @@ export function SubTopicDisplay(props) {
 
         if (state.hoverInputTextarea.display) {
 
-            if (state.hoverInputTextarea.stages == 1) {
-                //input in one stage
+            let hoverInputTextareaTitle = '';
+            let id = '';
+
+            //input in two stages
+
+            if (state.hoverInputTextarea.stage == 1) {
+
+                //input on 1st stage
+
+                if (state.hoverInputTextarea.mode === hoverInputAreaModes.create) {
+
+                    hoverInputTextareaTitle = 'Subtopic Title';
+
+                } else {
+
+                    hoverInputTextareaTitle = 'Edit Subtopic Title';
+                }
+
+                id = `${state.hoverInputTextarea.mode.description}${state.hoverInputTextarea.customId}subTopicHoverInputTextareaKeyStage1Stages2`.toLowerCase();
 
                 return (
                     <HoverInput
-                        key='subTopicHoverInputTextareaKeyStage1Stages1'
-                        id='subTopicHoverInputTextareaKeyStage1Stages1'
-                        title='Subtopic title'
+                        key={id}
+                        id={id}
+                        title={hoverInputTextareaTitle}
                         cancleable
                         onHoverInputCancel={onHoverInputCancel}
-                        onHoverInputSubmit={onHoverInputSubmit}
-                        maxLetterCount={50} />);
-
+                        hasHistoryForward
+                        onHoverInputForward={onHoverInputForward}
+                        maxLetterCount={50} />
+                );
             } else {
 
-                //input in two stages
+                //input on 2nd stage
 
-                if (state.hoverInputTextarea.stage == 1) {
+                if (state.hoverInputTextarea.mode === hoverInputAreaModes.create) {
 
-                    //input on 1st stage
-                    return (
-                        <HoverInput
-                            key='subTopicHoverInputTextareaKeyStage1Stages2'
-                            id='subTopicHoverInputTextareaKeyStage1Stages2'
-                            title='Subtopic title'
-                            cancleable
-                            onHoverInputCancel={onHoverInputCancel}
-                            hasHistoryForward
-                            onHoverInputForward={onHoverInputForward}
-                            maxLetterCount={50} />
-                    );
+                    hoverInputTextareaTitle = 'Subtopic Description';
+
                 } else {
 
-                    //input on 2nd stage
-                    return (
-                        <HoverInput
-                            key='subTopicHoverInputTextareaKeyStage2Stages2'
-                            id='subTopicHoverInputTextareaKeyStage2Stages2'
-                            title='Subtopic description'
-                            large
-                            hasHistoryBackward
-                            onHoverInputBack={onHoverInputBack}
-                            onHoverInputSubmit={onHoverInputSubmit}
-                            maxLetterCount={50} />
-                    );
+                    hoverInputTextareaTitle = 'Edit Subtopic Description';
                 }
+
+                id = `${state.hoverInputTextarea.mode.description}${state.hoverInputTextarea.customId}subTopicHoverInputTextareaKeyStage2Stages2`.toLowerCase();
+
+                return (
+                    <HoverInput
+                        key={id}
+                        id={id}
+                        title={hoverInputTextareaTitle}
+                        large
+                        hasHistoryBackward
+                        onHoverInputBack={onHoverInputBack}
+                        onHoverInputSubmit={onHoverInputSubmit}
+                        maxLetterCount={50} />
+                );
             }
+
         }
 
         return <></>;
@@ -255,13 +275,23 @@ export function SubTopicDisplay(props) {
     }
 
 
-    const onEditSubTopic = (serverItemId) => {
+    const onEditSubTopicButtonClick = (serverItemId) => {
 
         console.log(`subtopic item id for edit ${serverItemId}`);
 
+        setState(
+            produce(draft => {
+
+                draft.hoverInputTextarea.customId = `serverItemId${serverItemId}`;
+                draft.hoverInputTextarea.mode = hoverInputAreaModes.edit;
+                draft.hoverInputTextarea.display = true;
+
+            })
+        );
+
     }
 
-    const onDeleteSubTopic = (serverItemId) => {
+    const onDeleteSubTopicButtonClick = (serverItemId) => {
 
         console.log(`subtopic item id for deletetion ${serverItemId}`);
     }
@@ -283,7 +313,7 @@ export function SubTopicDisplay(props) {
                     }}>
 
                     {
-                        getSubTopicListItems(state.subTopics, onEditSubTopic, onDeleteSubTopic, observer, unobserver)
+                        getSubTopicListItems(state.subTopics, onEditSubTopicButtonClick, onDeleteSubTopicButtonClick, observer, unobserver)
                     }
 
                     <br /><br /><br />

@@ -66,6 +66,8 @@ function onObservedElementVisible(observedElementEntries) {
 
 export function TopicDisplay() {
 
+    const hoverInputAreaModes = { create: Symbol.for('createTopic'), edit: Symbol.for('editTopic') }
+
     const [state, setState] = useState({
 
         nextPageNumber: 1,
@@ -73,6 +75,9 @@ export function TopicDisplay() {
         topics: {},
 
         hoverInputTextarea: {
+            title: '',
+            mode: hoverInputAreaModes.create,
+            customId: '',
             stage: 1,
             stages: 1,
             display: false
@@ -138,6 +143,9 @@ export function TopicDisplay() {
         setState(
             produce(draft => {
 
+                draft.hoverInputTextarea.customId = `createTopicButtonId${listItemDisplayRef.current.getAttribute('id')}`;
+                draft.hoverInputTextarea.title = 'Add topic';
+                draft.hoverInputTextarea.mode = hoverInputAreaModes.create;
                 draft.hoverInputTextarea.display = true;
 
             })
@@ -167,11 +175,13 @@ export function TopicDisplay() {
             if (state.hoverInputTextarea.stages == 1) {
                 //input in one stage
 
+                const id = `${state.hoverInputTextarea.mode.description}${state.hoverInputTextarea.customId}topicHoverInputTextareaKeyStage1Stages1`.toLowerCase();
+
                 return (
                     <HoverInput
-                        key='topicHoverInputTextareaKeyStage1Stages1'
-                        id='topicHoverInputTextareaKeyStage1Stages1'
-                        title='Your Topic'
+                        key={id}
+                        id={id}
+                        title={state.hoverInputTextarea.title}
                         cancleable
                         onHoverInputCancel={onHoverInputCancel}
                         onHoverInputSubmit={onHoverInputSubmit}
@@ -184,13 +194,23 @@ export function TopicDisplay() {
 
     }
 
-    const onEditTopic = (serverItemId) => {
+    const onEditTopicButtonClick = (serverItemId) => {
 
         console.log(`topic item id for edit ${serverItemId}`);
 
+        setState(
+            produce(draft => {
+
+                draft.hoverInputTextarea.title = 'Edit topic';
+                draft.hoverInputTextarea.customId = `serverItemId${serverItemId}`;
+                draft.hoverInputTextarea.mode = hoverInputAreaModes.edit;
+                draft.hoverInputTextarea.display = true;
+
+            })
+        );
     }
 
-    const onDeleteTopic = (serverItemId) => {
+    const onDeleteTopicButtonClick = (serverItemId) => {
 
         console.log(`topic item id for deletetion ${serverItemId}`);
     }
@@ -213,7 +233,7 @@ export function TopicDisplay() {
                     }}>
 
                     {
-                        getTopicListItems(state.topics, onEditTopic, onDeleteTopic, observer, unobserver)
+                        getTopicListItems(state.topics, onEditTopicButtonClick, onDeleteTopicButtonClick, observer, unobserver)
                     }
 
                     <br /><br /><br />
