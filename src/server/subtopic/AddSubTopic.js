@@ -4,9 +4,15 @@ import { registerGeoPoint } from "server/geopoint/RegisterGeoPoint";
 import { subTopicEndpointConfig } from "./SubTopicEndpointConfig";
 
 
-function createRequest(subTopicId) {
+function createRequest(topicId, subTopicTitle, subTopicDescription) {
 
-    return axios.delete(subTopicEndpointConfig.delete.uri(subTopicId), {
+    return axios.post(subTopicEndpointConfig.add.uri(topicId), {
+
+        sub_topic_title: subTopicTitle,
+
+        sub_topic_description: subTopicDescription
+
+    }, {
 
         withCredentials: true,
 
@@ -24,14 +30,14 @@ function createRequest(subTopicId) {
 }
 
 
-export async function deleteSubTopic(subTopicId) {
+export async function addSubTopic(topicId, subTopicTitle, subTopicDescription) {
 
     try {
 
         //register geoPoint on every request
         await registerGeoPoint();
 
-        const response = await createRequest(subTopicId);
+        const response = await createRequest(topicId, subTopicTitle, subTopicDescription);
 
         return response.data;
 

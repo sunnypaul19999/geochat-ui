@@ -185,6 +185,14 @@ export function TopicDisplay() {
                 await updateTopic(serverItemId, topicTitle);
             }
         }
+
+        setState(
+            produce(draft => {
+
+                draft.hoverInputTextarea.display = false;
+
+            })
+        );
     }
 
     const hoverInput = () => {

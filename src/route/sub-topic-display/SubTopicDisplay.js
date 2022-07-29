@@ -18,6 +18,7 @@ import { RightWindow } from "component/right-window/RightWindow";
 import { BottomToolbar } from "component/bottom-toolbar/BottomToolbar";
 import { HoverInput } from "component/hover-input/HoverInput";
 import { updateSubTopic } from "server/subtopic/UpdateSubTopic";
+import { addSubTopic } from "server/subtopic/AddSubTopic";
 
 
 
@@ -227,11 +228,20 @@ export function SubTopicDisplay(props) {
 
         if (state.hoverInputTextarea.mode === hoverInputAreaModes.create) {
 
+            await addSubTopic(state.topicId, subTopicTitle, subTopicDescription);
 
         } else {
 
             await updateSubTopic(state.topicId, subTopicId, subTopicTitle, subTopicDescription);
         }
+
+        setState(
+            produce(draft => {
+
+                draft.hoverInputTextarea.display = false;
+
+            })
+        );
     }
 
     const hoverInput = () => {
