@@ -4,9 +4,9 @@ import { registerGeoPoint } from "server/geopoint/RegisterGeoPoint";
 import { topicEndpointConfig } from "./TopicEndpointConfig";
 
 
-function createRequest(topicId, topicTitle) {
+function createRequest(topicTitle) {
 
-    return axios.put(topicEndpointConfig.update.uri(topicId), {
+    return axios.post(topicEndpointConfig.add.uri(), {
 
         topic_title: topicTitle
 
@@ -28,14 +28,14 @@ function createRequest(topicId, topicTitle) {
 }
 
 
-export async function updateTopic(topicId, topicTitle) {
+export async function addTopic(topicTitle) {
 
     try {
 
         //register geoPoint on every request
         await registerGeoPoint();
 
-        const response = await createRequest(topicId, topicTitle);
+        const response = await createRequest(topicTitle);
 
         return response.data;
 

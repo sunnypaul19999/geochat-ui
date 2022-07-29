@@ -15,6 +15,8 @@ import { dispatchFetchNextTopicPageEvent } from "./TopicDisplayEvent";
 import { RightWindow } from "component/right-window/RightWindow";
 import { BottomToolbar } from "component/bottom-toolbar/BottomToolbar";
 import { HoverInput } from "component/hover-input/HoverInput";
+import { updateTopic } from "server/topic/UpdateTopic";
+import { addTopic } from "server/topic/AddTopic";
 
 
 function produceNextState(pageDetails, setState) {
@@ -77,7 +79,7 @@ export function TopicDisplay() {
         hoverInputTextarea: {
             title: '',
             mode: hoverInputAreaModes.create,
-            customId: '',
+            serverItemId: '',
             defaultText: '',
             stage: 1,
             stages: 1,
@@ -144,8 +146,10 @@ export function TopicDisplay() {
         setState(
             produce(draft => {
 
-                draft.hoverInputTextarea.customId = `createTopicButtonId${listItemDisplayRef.current.getAttribute('id')}`;
+                draft.hoverInputTextarea.serverItemId = '';
+
                 draft.hoverInputTextarea.title = 'Add topic';
+
                 draft.hoverInputTextarea.mode = hoverInputAreaModes.create;
 
                 draft.hoverInputTextarea.defaultText = '';
@@ -168,8 +172,19 @@ export function TopicDisplay() {
         );
     }
 
-    const onHoverInputSubmit = (event) => {
-        event.stopPropagation();
+    const onHoverInputSubmit = async (topicTitle, serverItemId) => {
+
+        if (state.hoverInputTextarea.mode === hoverInputAreaModes.create) {
+
+            await addTopic(topicTitle);
+
+        } else {
+
+            if (state.hoverInputTextarea.mode === hoverInputAreaModes.edit) {
+
+                await updateTopic(serverItemId, topicTitle);
+            }
+        }
     }
 
     const hoverInput = () => {
@@ -179,12 +194,18 @@ export function TopicDisplay() {
             if (state.hoverInputTextarea.stages == 1) {
                 //input in one stage
 
-                const id = `${state.hoverInputTextarea.mode.description}${state.hoverInputTextarea.customId}topicHoverInputTextareaKeyStage1Stages1`.toLowerCase();
+                let idAndKey = `${state.hoverInputTextarea.mode.description}`;
+                if (state.hoverInputTextarea.serverItemId) {
+
+                    idAndKey = `${idAndKey}:serverItemId${state.hoverInputTextarea.serverItemId}`;
+                }
+                idAndKey = `${idAndKey}:topicHoverInputTextareaKeyStage1Stages1`.toLowerCase();
 
                 return (
                     <HoverInput
-                        key={id}
-                        id={id}
+                        key={idAndKey}
+                        id={idAndKey}
+                        serverItemId={state.hoverInputTextarea.serverItemId}
                         title={state.hoverInputTextarea.title}
                         defaultText={state.hoverInputTextarea.defaultText}
                         cancleable
@@ -209,7 +230,9 @@ export function TopicDisplay() {
             produce(draft => {
 
                 draft.hoverInputTextarea.title = 'Edit topic';
-                draft.hoverInputTextarea.customId = `serverItemId${serverItemId}`;
+
+                draft.hoverInputTextarea.serverItemId = serverItemId;
+
                 draft.hoverInputTextarea.mode = hoverInputAreaModes.edit;
 
                 draft.hoverInputTextarea.defaultText = topic.topic_title;

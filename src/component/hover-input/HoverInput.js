@@ -107,6 +107,8 @@ function useHoverInputTextState(textStateId) {
 /*
 
         id -- textarea id
+        serverItemId -- actual server item id
+        isContinued -- is used to track form input continuation
         title
         defaultText
         maxLetterCount
@@ -124,6 +126,7 @@ export function HoverInput(props) {
 
     const [state, setState] = useState({
         id: props.id,
+        serverItemId: props.serverItemId,
         isContinued: props.isContinued,
         title: props.title,
         defaultText: props.defaultText,
@@ -134,7 +137,7 @@ export function HoverInput(props) {
         isTextAreaLarge: Boolean(props.large)
     });
 
-    const [getLetterCount, getText, setText, onHoverTextInput] = useHoverInputTextState(props.id);
+    const [getLetterCount, getText, setText, onHoverTextInput] = useHoverInputTextState(state.id);
 
     const textareaRef = useRef();
 
@@ -213,7 +216,7 @@ export function HoverInput(props) {
     const onHoverInputSubmit = (event) => {
         event.stopPropagation();
 
-        props.onHoverInputSubmit(event);
+        props.onHoverInputSubmit(getText(), state.serverItemId);
     }
 
     const submitButton = () => {
