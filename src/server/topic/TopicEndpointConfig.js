@@ -85,6 +85,10 @@ export const topicEndpointConfig = {
 
         method: 'PUT',
 
+        request: {
+            topic_title: null
+        },
+
         response: {}
 
     },

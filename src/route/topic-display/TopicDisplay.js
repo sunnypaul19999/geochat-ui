@@ -8,7 +8,7 @@ import { LeftWindow } from "component/left-window/LeftWindow";
 
 import { getTopicListItems } from "./TopicListItems";
 
-import { fetchTopicPage } from "./TopicQuery";
+import { fetchTopicById, fetchTopicPage } from "./TopicQuery";
 
 import { dispatchFetchNextTopicPageEvent } from "./TopicDisplayEvent";
 
@@ -78,6 +78,7 @@ export function TopicDisplay() {
             title: '',
             mode: hoverInputAreaModes.create,
             customId: '',
+            defaultText: '',
             stage: 1,
             stages: 1,
             display: false
@@ -146,6 +147,9 @@ export function TopicDisplay() {
                 draft.hoverInputTextarea.customId = `createTopicButtonId${listItemDisplayRef.current.getAttribute('id')}`;
                 draft.hoverInputTextarea.title = 'Add topic';
                 draft.hoverInputTextarea.mode = hoverInputAreaModes.create;
+
+                draft.hoverInputTextarea.defaultText = '';
+
                 draft.hoverInputTextarea.display = true;
 
             })
@@ -182,6 +186,7 @@ export function TopicDisplay() {
                         key={id}
                         id={id}
                         title={state.hoverInputTextarea.title}
+                        defaultText={state.hoverInputTextarea.defaultText}
                         cancleable
                         onHoverInputCancel={onHoverInputCancel}
                         onHoverInputSubmit={onHoverInputSubmit}
@@ -194,9 +199,11 @@ export function TopicDisplay() {
 
     }
 
-    const onEditTopicButtonClick = (serverItemId) => {
+    const onEditTopicButtonClick = async (serverItemId) => {
 
-        console.log(`topic item id for edit ${serverItemId}`);
+        //console.log(`topic item id for edit ${serverItemId}`);
+
+        const topic = await fetchTopicById(serverItemId);
 
         setState(
             produce(draft => {
@@ -204,6 +211,9 @@ export function TopicDisplay() {
                 draft.hoverInputTextarea.title = 'Edit topic';
                 draft.hoverInputTextarea.customId = `serverItemId${serverItemId}`;
                 draft.hoverInputTextarea.mode = hoverInputAreaModes.edit;
+
+                draft.hoverInputTextarea.defaultText = topic.topic_title;
+
                 draft.hoverInputTextarea.display = true;
 
             })

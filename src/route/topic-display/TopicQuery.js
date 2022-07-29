@@ -1,4 +1,23 @@
+import { getTopicById } from "server/topic/GetTopicById";
 import { getTopicsByPage } from "server/topic/GetTopicsByPage";
+
+const format = (page) => {
+
+    let topics = {};
+
+    page.forEach(topic => {
+
+        topics[topic.id] = {
+            ...topic,
+
+            //todo: remove below line, just for experiment
+            topic_title: `topic ${topic.id}`
+        };
+
+    });
+
+    return topics;
+}
 
 async function fetchTopicPage(nextPageNumber) {
 
@@ -8,18 +27,7 @@ async function fetchTopicPage(nextPageNumber) {
 
         const page = await getTopicsByPage(nextPageNumber);
 
-        let topics = {};
-
-        page.forEach(topic => {
-
-            topics[topic.id] = {
-                ...topic,
-
-                //todo: remove below line, just for experiment
-                topic_title: `topic ${topic.id}`
-            };
-
-        });
+        let topics = format(page);
 
         //return pageNumber fetched and the topics
         return {
@@ -39,5 +47,23 @@ async function fetchTopicPage(nextPageNumber) {
 
 }
 
+async function fetchTopicById(topicId) {
 
-export { fetchTopicPage };
+
+    try {
+
+        let topics = await getTopicById(topicId);
+
+        topics = format(topics);
+
+        return topics[topicId];
+
+    } catch (e) {
+
+        console.log(e);
+
+    }
+}
+
+
+export { fetchTopicPage, fetchTopicById };

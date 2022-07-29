@@ -67,6 +67,12 @@ function useHoverInputTextState(textStateId) {
 
     }
 
+    const setText = (text) => {
+
+        HoverTextStorage.setText(textStateId, text);
+
+    }
+
     const [state, setState] = useState({
 
         letterCount: (getText()) ? getText().length : 0,
@@ -81,7 +87,9 @@ function useHoverInputTextState(textStateId) {
             produce(draft => {
 
                 //textRef.current.text = event.target.value;
-                HoverTextStorage.setText(textStateId, event.target.value);
+                //HoverTextStorage.setText(textStateId, event.target.value);
+
+                setText(event.target.value);
 
                 draft.letterCount = event.target.value.length;
 
@@ -91,7 +99,7 @@ function useHoverInputTextState(textStateId) {
 
     const getLetterCount = () => { return state.letterCount; }
 
-    return [getLetterCount, getText, onTextInput];
+    return [getLetterCount, getText, setText, onTextInput];
 }
 
 //-----props------
@@ -100,6 +108,7 @@ function useHoverInputTextState(textStateId) {
 
         id -- textarea id
         title
+        defaultText
         maxLetterCount
         isCancleable
         onHoverInputCancel
@@ -116,6 +125,7 @@ export function HoverInput(props) {
     const [state, setState] = useState({
         id: props.id,
         title: props.title,
+        defaultText: props.defaultText,
         maxLetterCount: props.maxLetterCount,
         isCancleable: props.cancleable,
         hasHistoryBackward: props.hasHistoryBackward,
@@ -123,7 +133,7 @@ export function HoverInput(props) {
         isTextAreaLarge: Boolean(props.large)
     });
 
-    const [getLetterCount, getText, onHoverTextInput] = useHoverInputTextState(props.id);
+    const [getLetterCount, getText, setText, onHoverTextInput] = useHoverInputTextState(props.id);
 
     const textareaRef = useRef();
 
@@ -207,13 +217,6 @@ export function HoverInput(props) {
 
     const submitButton = () => {
 
-        let disabled = true;
-
-        if (state.currentLetterCount <= state.maxLetterCount) {
-
-            disabled = false;
-        }
-
         return (
             <button
                 type="button"
@@ -249,6 +252,22 @@ export function HoverInput(props) {
 
         onHoverTextInput(event);
     }
+
+    useEffect(() => {
+
+
+        if (typeof state.defaultText === 'string') {
+
+            if (state.defaultText.length > 0) {
+
+                setText(state.defaultText);
+
+                console.log(state.defaultText);
+            }
+
+        }
+
+    }, [])
 
     useEffect(() => {
 

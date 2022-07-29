@@ -155,6 +155,9 @@ export function SubTopicDisplay(props) {
 
                 draft.hoverInputTextarea.customId = `createSubTopicButtonId${listItemDisplayRef.current.getAttribute('id')}`;
                 draft.hoverInputTextarea.mode = hoverInputAreaModes.create;
+
+                draft.hoverInputTextarea.defaultText = '';
+
                 draft.hoverInputTextarea.display = true;
 
             })
@@ -284,6 +287,9 @@ export function SubTopicDisplay(props) {
 
                 draft.hoverInputTextarea.customId = `serverItemId${serverItemId}`;
                 draft.hoverInputTextarea.mode = hoverInputAreaModes.edit;
+
+                draft.hoverInputTextarea.defaultText = '';
+
                 draft.hoverInputTextarea.display = true;
 
             })
