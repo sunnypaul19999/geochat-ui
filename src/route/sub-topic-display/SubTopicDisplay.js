@@ -16,6 +16,7 @@ import { dispatchFetchNextSubTopicPageEvent } from "./SubTopicDisplayEvent";
 
 import { RightWindow } from "component/right-window/RightWindow";
 import { BottomToolbar } from "component/bottom-toolbar/BottomToolbar";
+import { HoverInput } from "component/hover-input/HoverInput";
 
 
 
@@ -84,6 +85,12 @@ export function SubTopicDisplay(props) {
 
         subTopics: {},
 
+        hoverInputTextarea: {
+            stage: 1,
+            stages: 2,
+            display: false
+        }
+
     });
 
 
@@ -135,12 +142,135 @@ export function SubTopicDisplay(props) {
 
     }, [onFetchNextTopicPageEventHandler]);
 
+    const onCreateButtonCLick = (event) => {
+        event.stopPropagation();
+
+        setState(
+            produce(draft => {
+
+                draft.hoverInputTextarea.display = true;
+
+            })
+        );
+    }
+
+    const onHoverInputBack = (event) => {
+        event.stopPropagation();
+
+        //console.log('onHoverInputBack');
+
+        setState(
+            produce(draft => {
+
+                draft.hoverInputTextarea.stage = 1;
+
+            })
+        );
+    }
+
+    const onHoverInputForward = (event) => {
+        event.stopPropagation();
+
+
+        setState(
+            produce(draft => {
+
+                draft.hoverInputTextarea.stage = 2;
+
+            })
+        );
+    }
+
+    const onHoverInputCancel = (event) => {
+        event.stopPropagation();
+
+        setState(
+            produce(draft => {
+
+                draft.hoverInputTextarea.display = false;
+
+            })
+        );
+    }
+
+    const onHoverInputSubmit = (event) => {
+        event.stopPropagation();
+    }
+
+    const hoverInput = () => {
+
+        if (state.hoverInputTextarea.display) {
+
+            if (state.hoverInputTextarea.stages == 1) {
+                //input in one stage
+
+                return (
+                    <HoverInput
+                        key='subTopicHoverInputTextareaKeyStage1Stages1'
+                        id='subTopicHoverInputTextareaKeyStage1Stages1'
+                        title='Subtopic title'
+                        cancleable
+                        onHoverInputCancel={onHoverInputCancel}
+                        onHoverInputSubmit={onHoverInputSubmit}
+                        maxLetterCount={50} />);
+
+            } else {
+
+                //input in two stages
+
+                if (state.hoverInputTextarea.stage == 1) {
+
+                    //input on 1st stage
+                    return (
+                        <HoverInput
+                            key='subTopicHoverInputTextareaKeyStage1Stages2'
+                            id='subTopicHoverInputTextareaKeyStage1Stages2'
+                            title='Subtopic title'
+                            cancleable
+                            onHoverInputCancel={onHoverInputCancel}
+                            hasHistoryForward
+                            onHoverInputForward={onHoverInputForward}
+                            maxLetterCount={50} />
+                    );
+                } else {
+
+                    //input on 2nd stage
+                    return (
+                        <HoverInput
+                            key='subTopicHoverInputTextareaKeyStage2Stages2'
+                            id='subTopicHoverInputTextareaKeyStage2Stages2'
+                            title='Subtopic description'
+                            large
+                            hasHistoryBackward
+                            onHoverInputBack={onHoverInputBack}
+                            onHoverInputSubmit={onHoverInputSubmit}
+                            maxLetterCount={50} />
+                    );
+                }
+            }
+        }
+
+        return <></>;
+
+    }
+
+
+    const onEditSubTopic = (serverItemId) => {
+
+        console.log(`subtopic item id for edit ${serverItemId}`);
+
+    }
+
+    const onDeleteSubTopic = (serverItemId) => {
+
+        console.log(`subtopic item id for deletetion ${serverItemId}`);
+    }
 
 
     return (
 
         <>
-            <LeftWindow>
+            <LeftWindow key='subTopicLeftWindow' >
 
                 <div
                     ref={listItemDisplayRef}
@@ -153,18 +283,22 @@ export function SubTopicDisplay(props) {
                     }}>
 
                     {
-                        getSubTopicListItems(state.subTopics, observer, unobserver)
+                        getSubTopicListItems(state.subTopics, onEditSubTopic, onDeleteSubTopic, observer, unobserver)
                     }
 
                     <br /><br /><br />
 
                 </div>
 
-                <BottomToolbar create />
+                <BottomToolbar key='topicBottomUIToolbar' create onCreateButtonCLick={onCreateButtonCLick} />
 
             </LeftWindow>
 
-            <RightWindow></RightWindow>
+            <RightWindow key='subTopicRightWindow'>
+
+                {hoverInput()}
+
+            </RightWindow>
         </>
 
     )

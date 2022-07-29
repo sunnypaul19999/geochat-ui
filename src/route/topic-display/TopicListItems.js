@@ -1,6 +1,6 @@
 import { ListItem } from "component/list-item/ListItem";
 
-export function getTopicListItems(topics, observer, unobserver) {
+export function getTopicListItems(topics, onEditTopic, onDeleteTopic, observer, unobserver) {
 
     //return spinner when topics is falsy
     if (!topics) return (<></>);
@@ -18,10 +18,12 @@ export function getTopicListItems(topics, observer, unobserver) {
         let props = {
             key: `topic_${topicId}`,
             isTopic: true,
-            itemId: topicId,
+            serverItemId: topicId,
             title: topic.topic_title,
             canEdit: true,
+            onEdit: onEditTopic,
             canDelete: true,
+            onDelete: onDeleteTopic,
             observe: null,
             unobserve: null
         }

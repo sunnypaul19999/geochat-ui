@@ -74,7 +74,7 @@ export function TopicDisplay() {
 
         hoverInputTextarea: {
             stage: 1,
-            stages: 2,
+            stages: 1,
             display: false
         }
 
@@ -144,33 +144,6 @@ export function TopicDisplay() {
         );
     }
 
-    const onHoverInputBack = (event) => {
-        event.stopPropagation();
-
-        //console.log('onHoverInputBack');
-
-        setState(
-            produce(draft => {
-
-                draft.hoverInputTextarea.stage = 1;
-
-            })
-        );
-    }
-
-    const onHoverInputForward = (event) => {
-        event.stopPropagation();
-
-
-        setState(
-            produce(draft => {
-
-                draft.hoverInputTextarea.stage = 2;
-
-            })
-        );
-    }
-
     const onHoverInputCancel = (event) => {
         event.stopPropagation();
 
@@ -196,52 +169,30 @@ export function TopicDisplay() {
 
                 return (
                     <HoverInput
-                        key='hoverInputTextareaKeyStage1Stages1'
-                        id='hoverInputTextareaKeyStage1Stages1'
-                        title='Add Topic'
+                        key='topicHoverInputTextareaKeyStage1Stages1'
+                        id='topicHoverInputTextareaKeyStage1Stages1'
+                        title='Your Topic'
                         cancleable
                         onHoverInputCancel={onHoverInputCancel}
                         onHoverInputSubmit={onHoverInputSubmit}
                         maxLetterCount={50} />);
 
-            } else {
-
-                //input in two stages
-
-                if (state.hoverInputTextarea.stage == 1) {
-
-                    //input on 1st stage
-                    return (
-                        <HoverInput
-                            key='hoverInputTextareaKeyStage1Stages2'
-                            id='hoverInputTextareaKeyStage1Stages2'
-                            title='Add Topic'
-                            cancleable
-                            onHoverInputCancel={onHoverInputCancel}
-                            hasHistoryForward
-                            onHoverInputForward={onHoverInputForward}
-                            maxLetterCount={50} />
-                    );
-                } else {
-
-                    //input on 2nd stage
-                    return (
-                        <HoverInput
-                            key='hoverInputTextareaKeyStage2Stages2'
-                            id='hoverInputTextareaKeyStage2Stages2'
-                            title='Add Topic'
-                            large
-                            hasHistoryBackward
-                            onHoverInputBack={onHoverInputBack}
-                            onHoverInputSubmit={onHoverInputSubmit}
-                            maxLetterCount={50} />
-                    );
-                }
             }
         }
 
         return <></>;
 
+    }
+
+    const onEditTopic = (serverItemId) => {
+
+        console.log(`topic item id for edit ${serverItemId}`);
+
+    }
+
+    const onDeleteTopic = (serverItemId) => {
+
+        console.log(`topic item id for deletetion ${serverItemId}`);
     }
 
 
@@ -262,7 +213,7 @@ export function TopicDisplay() {
                     }}>
 
                     {
-                        getTopicListItems(state.topics, observer, unobserver)
+                        getTopicListItems(state.topics, onEditTopic, onDeleteTopic, observer, unobserver)
                     }
 
                     <br /><br /><br />

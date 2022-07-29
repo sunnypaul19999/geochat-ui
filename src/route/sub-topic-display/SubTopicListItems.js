@@ -1,6 +1,6 @@
 import { ListItem } from "component/list-item/ListItem";
 
-export function getSubTopicListItems(subTopics, observer, unobserver) {
+export function getSubTopicListItems(subTopics, onEditSubTopic, onDeleteSubTopic, observer, unobserver) {
 
     //return spinner when subTopics is falsy
     if (!subTopics) return (<></>);
@@ -18,11 +18,13 @@ export function getSubTopicListItems(subTopics, observer, unobserver) {
         let props = {
             key: `sub_topic_${subTopicId}`,
             isSubTopic: true,
-            itemId: subTopicId,
+            serverItemId: subTopicId,
             title: subTopic.sub_topic_title,
             description: subTopic.sub_topic_description,
             canEdit: true,
+            onEdit: onEditSubTopic,
             canDelete: true,
+            onDelete: onDeleteSubTopic,
             observe: null,
             unobserve: null
         }

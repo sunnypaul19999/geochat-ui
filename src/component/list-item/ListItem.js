@@ -13,14 +13,14 @@ function ListItemActionToolbar(props) {
 
     const onClickEdit = (event) => {
 
-        event.stopPropagation();
+        props.onEdit(event);
 
     };
 
 
     const onClickDelete = (event) => {
 
-        event.stopPropagation();
+        props.onDelete(event);
 
     };
 
@@ -79,7 +79,7 @@ export function ListItem(props) {
     const [state, setState] = useState({
         isTopic: props.isTopic,
         isSubTopic: props.isSubTopic,
-        itemId: props.itemId,
+        serverItemId: props.serverItemId,
         title: props.title,
         description: props.description,
         canEdit: props.canEdit,
@@ -118,13 +118,13 @@ export function ListItem(props) {
 
         if (state.isTopic) {
 
-            const topicId = state.itemId;
+            const topicId = state.serverItemId;
 
             navigate(`${topicId}/subTopic`);
 
         } else {
 
-            const subTopicId = state.itemId
+            const subTopicId = state.serverItemId
 
             navigate(`${subTopicId}/meta`, {
                 state: {
@@ -138,6 +138,19 @@ export function ListItem(props) {
     }
 
 
+    const onEditListItem = (event) => {
+        event.stopPropagation();
+
+        props.onEdit(state.serverItemId);
+    }
+
+    const onDeleteListItem = (event) => {
+        event.stopPropagation();
+
+        props.onDelete(state.serverItemId);
+    }
+
+
     return (
         <div
             ref={itemRef}
@@ -148,7 +161,11 @@ export function ListItem(props) {
                         {state.title}
                     </p>
                 </div>
-                <ListItemActionToolbar canDelete={state.canDelete} canEdit={state.canEdit} />
+                <ListItemActionToolbar
+                    canEdit={state.canEdit}
+                    onEdit={onEditListItem}
+                    canDelete={state.canDelete}
+                    onDelete={onDeleteListItem} />
             </div>
         </div>
     );
