@@ -53,7 +53,7 @@ function produceNextState(pageDetails, setState) {
 
 function onObservedElementVisible(observedElementEntries) {
 
-    console.log(`total observed elements = ${observedElementEntries.length}`);
+    //console.log(`total observed elements = ${observedElementEntries.length}`);
 
     if (observedElementEntries[0].isIntersecting) {
 
@@ -74,6 +74,7 @@ export function TopicDisplay() {
 
         hoverInputTextarea: {
             stage: 1,
+            stages: 2,
             display: false
         }
 
@@ -143,11 +144,100 @@ export function TopicDisplay() {
         );
     }
 
+    const onHoverInputBack = (event) => {
+        event.stopPropagation();
+
+        //console.log('onHoverInputBack');
+
+        setState(
+            produce(draft => {
+
+                draft.hoverInputTextarea.stage = 1;
+
+            })
+        );
+    }
+
+    const onHoverInputForward = (event) => {
+        event.stopPropagation();
+
+
+        setState(
+            produce(draft => {
+
+                draft.hoverInputTextarea.stage = 2;
+
+            })
+        );
+    }
+
+    const onHoverInputCancel = (event) => {
+        event.stopPropagation();
+
+        setState(
+            produce(draft => {
+
+                draft.hoverInputTextarea.display = false;
+
+            })
+        );
+    }
+
+    const onHoverInputSubmit = (event) => {
+        event.stopPropagation();
+    }
+
     const hoverInput = () => {
 
         if (state.hoverInputTextarea.display) {
 
-            return (<HoverInput title='Add Topic' cancleable maxLetterCount={50} />);
+            if (state.hoverInputTextarea.stages == 1) {
+                //input in one stage
+
+                return (
+                    <HoverInput
+                        key='hoverInputTextareaKeyStage1Stages1'
+                        id='hoverInputTextareaKeyStage1Stages1'
+                        title='Add Topic'
+                        cancleable
+                        onHoverInputCancel={onHoverInputCancel}
+                        onHoverInputSubmit={onHoverInputSubmit}
+                        maxLetterCount={50} />);
+
+            } else {
+
+                //input in two stages
+
+                if (state.hoverInputTextarea.stage == 1) {
+
+                    //input on 1st stage
+                    return (
+                        <HoverInput
+                            key='hoverInputTextareaKeyStage1Stages2'
+                            id='hoverInputTextareaKeyStage1Stages2'
+                            title='Add Topic'
+                            cancleable
+                            onHoverInputCancel={onHoverInputCancel}
+                            hasHistoryForward
+                            onHoverInputForward={onHoverInputForward}
+                            maxLetterCount={50} />
+                    );
+                } else {
+
+                    //input on 2nd stage
+                    return (
+                        <HoverInput
+                            key='hoverInputTextareaKeyStage2Stages2'
+                            id='hoverInputTextareaKeyStage2Stages2'
+                            title='Add Topic'
+                            large
+                            hasHistoryBackward
+                            onHoverInputBack={onHoverInputBack}
+                            onHoverInputSubmit={onHoverInputSubmit}
+                            maxLetterCount={50} />
+                    );
+                }
+            }
         }
 
         return <></>;
@@ -155,11 +245,10 @@ export function TopicDisplay() {
     }
 
 
-
     return (
 
         <>
-            <LeftWindow>
+            <LeftWindow key='topicLeftWindow'>
 
                 <div
                     ref={listItemDisplayRef}
@@ -180,11 +269,11 @@ export function TopicDisplay() {
 
                 </div>
 
-                <BottomToolbar create onCreateButtonCLick={onCreateButtonCLick} />
+                <BottomToolbar key='topicBottomUIToolbar' create onCreateButtonCLick={onCreateButtonCLick} />
 
             </LeftWindow>
 
-            <RightWindow>
+            <RightWindow key='topicRightWindow'>
 
                 {hoverInput()}
 
