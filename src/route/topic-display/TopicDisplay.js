@@ -14,6 +14,7 @@ import { dispatchFetchNextTopicPageEvent } from "./TopicDisplayEvent";
 
 import { RightWindow } from "component/right-window/RightWindow";
 import { BottomToolbar } from "component/bottom-toolbar/BottomToolbar";
+import { HoverInput } from "component/hover-input/HoverInput";
 
 
 function produceNextState(pageDetails, setState) {
@@ -71,6 +72,11 @@ export function TopicDisplay() {
 
         topics: {},
 
+        hoverInputTextarea: {
+            stage: 1,
+            display: false
+        }
+
     });
 
 
@@ -125,6 +131,30 @@ export function TopicDisplay() {
     }, [onFetchNextTopicPageEventHandler]);
 
 
+    const onCreateButtonCLick = (event) => {
+        event.stopPropagation();
+
+        setState(
+            produce(draft => {
+
+                draft.hoverInputTextarea.display = true;
+
+            })
+        );
+    }
+
+    const hoverInput = () => {
+
+        if (state.hoverInputTextarea.display) {
+
+            return (<HoverInput title='Add Topic' cancleable maxLetterCount={50} />);
+        }
+
+        return <></>;
+
+    }
+
+
 
     return (
 
@@ -150,11 +180,15 @@ export function TopicDisplay() {
 
                 </div>
 
-                <BottomToolbar create />
+                <BottomToolbar create onCreateButtonCLick={onCreateButtonCLick} />
 
             </LeftWindow>
 
-            <RightWindow></RightWindow>
+            <RightWindow>
+
+                {hoverInput()}
+
+            </RightWindow>
         </>
 
     )

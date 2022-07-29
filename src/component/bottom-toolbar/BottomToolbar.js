@@ -48,9 +48,9 @@ export function BottomToolbar(props) {
         }
 
         return (
-            <span class="backward-button" title="go backward" style={style}>
+            <span className="backward-button" title="go backward" style={style}>
 
-                <span class="material-icons" onClick={onBackButtonClick}>
+                <span className="material-icons" onClick={onBackButtonClick}>
 
                     chevron_left
 
@@ -77,8 +77,8 @@ export function BottomToolbar(props) {
         }
 
         return (
-            <span class="forward-button" title="go forward" style={style}>
-                <span class="material-icons" onClick={onForwardButtonClick}>
+            <span className="forward-button" title="go forward" style={style}>
+                <span className="material-icons" onClick={onForwardButtonClick}>
                     chevron_right
                 </span>
             </span>
@@ -91,6 +91,8 @@ export function BottomToolbar(props) {
         event.stopPropagation();
 
         console.log(window.history.state);
+
+        props.onCreateButtonCLick(event);
 
         //console.log(`${JSON.stringify(history.state, null, 2)}`);
 
@@ -107,8 +109,8 @@ export function BottomToolbar(props) {
         }
 
         return (
-            <span class="create-button" title="create" style={style}>
-                <span class="material-icons" onClick={onCreateButtonCLick}>
+            <span className="create-button" title="create" style={style}>
+                <span className="material-icons" onClick={onCreateButtonCLick}>
                     add_circle_outline
                 </span>
             </span>
@@ -117,8 +119,8 @@ export function BottomToolbar(props) {
     }
 
     return (
-        <div class="bottom-ui-toolbar position-absolute bottom-0 start-50 translate-middle">
-            <div class="hstack gap-1 pt-1 rounded-pill justify-content-center">
+        <div className="bottom-ui-toolbar position-absolute bottom-0 start-50 translate-middle">
+            <div className="hstack gap-1 pt-1 rounded-pill justify-content-center">
 
                 {getBackButton()}
 
