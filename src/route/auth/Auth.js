@@ -22,11 +22,11 @@ function useValidAuth(usernameInputRef, passwordInputRef, confirmPasswordRef, su
 
     //const [state, setState] = useState()
 
-    const validation = {
+    const validation = useRef({
         isUsernameValid: false,
         isPasswordValid: false,
-        isConfirmPasswordValid: true
-    }
+        isConfirmPasswordValid: (confirmPasswordRef.current) ? false : true
+    })
 
     const validatePasswordText = (password) => {
 
@@ -45,7 +45,7 @@ function useValidAuth(usernameInputRef, passwordInputRef, confirmPasswordRef, su
 
         if (isValid) {
 
-            validation.isPasswordValid = true;
+            validation.current.isPasswordValid = true;
 
             // setState(
             //     produce(draft => {
@@ -59,7 +59,7 @@ function useValidAuth(usernameInputRef, passwordInputRef, confirmPasswordRef, su
             // )
         } else {
 
-            validation.isPasswordValid = false;
+            validation.current.isPasswordValid = false;
 
             // setState(
             //     produce(draft => {
@@ -77,38 +77,17 @@ function useValidAuth(usernameInputRef, passwordInputRef, confirmPasswordRef, su
 
     const validateConfirmPassword = () => {
 
-        const password = confirmPasswordRef.current.value;
+        const confirmPassword = confirmPasswordRef.current.value;
 
-        const isValid = validatePasswordText(password);
+        const isValid = validatePasswordText(confirmPassword);
 
-        if (isValid) {
+        if (isValid && confirmPassword === passwordInputRef.current.value) {
 
-            validation.isConfirmPasswordValid = true;
+            validation.current.isConfirmPasswordValid = true;
 
-            // setState(
-            //     produce(draft => {
-
-            //         if (!draft.isConfirmPasswordValid) {
-
-            //             draft.isConfirmPasswordValid = true;
-            //         }
-
-            //     })
-            // )
         } else {
 
-            validation.isConfirmPasswordValid = false;
-
-            // setState(
-            //     produce(draft => {
-
-            //         if (draft.isConfirmPasswordValid) {
-
-            //             draft.isConfirmPasswordValid = false;
-            //         }
-
-            //     })
-            // )
+            validation.current.isConfirmPasswordValid = false;
         }
     }
 
@@ -122,7 +101,7 @@ function useValidAuth(usernameInputRef, passwordInputRef, confirmPasswordRef, su
 
             if (username.length >= 5 && username.length < 50) {
 
-                validation.isUsernameValid = true;
+                validation.current.isUsernameValid = true;
 
                 // setState(
                 //     produce(draft => {
@@ -139,7 +118,7 @@ function useValidAuth(usernameInputRef, passwordInputRef, confirmPasswordRef, su
 
             } else {
 
-                validation.isUsernameValid = false;
+                validation.current.isUsernameValid = false;
 
                 // console.log(submitButtonRef.current.classList);
 
@@ -159,13 +138,20 @@ function useValidAuth(usernameInputRef, passwordInputRef, confirmPasswordRef, su
 
     }
 
-    const validate = () => {
+    const isValid = () => {
+
+        console.log(JSON.stringify(validation.current, null, 2));
+
+        return (validation.current.isUsernameValid && validation.current.isPasswordValid && validation.current.isConfirmPasswordValid);
+    }
+
+    const validate = (inputRef) => {
 
         validateUsername();
 
         validatePassword();
 
-        validateConfirmPassword()
+        if (confirmPasswordRef.current) { validateConfirmPassword() }
 
         // console.log(isValid());
 
@@ -177,14 +163,22 @@ function useValidAuth(usernameInputRef, passwordInputRef, confirmPasswordRef, su
             submitButtonRef.current.classList.add('disabled');
         }
 
+        if (inputRef.current === usernameInputRef.current) {
+
+            return validation.current.isUsernameValid;
+
+        } else if (inputRef.current === passwordInputRef.current) {
+
+            return validation.current.isPasswordValid;
+
+        } else if (inputRef.current === confirmPasswordRef.current) {
+
+            return validation.current.isConfirmPasswordValid;
+
+        }
+
     }
 
-    const isValid = () => {
-
-        console.log(JSON.stringify(validation, null, 2));
-
-        return (validation.isUsernameValid && validation.isPasswordValid && validation.isConfirmPasswordValid);
-    }
 
     return validate;
 
@@ -194,12 +188,21 @@ function Auth(props) {
 
     const [state, setState] = useState({
         signin: props.signin,
+        isValidUsername: true,
+        isValidPassword: true,
+        isValidConfirmPassword: true,
     });
 
     const usernameInputRef = useRef();
     const passwordInputRef = useRef();
     const confirmPasswordRef = useRef();
     const submitButtonRef = useRef();
+
+    const errDisp = {
+        username: useRef(),
+        password: useRef(),
+        confirmPassword: useRef(),
+    }
 
     const navigate = useNavigate();
 
@@ -226,18 +229,52 @@ function Auth(props) {
     }
 
     const onUsernameInput = (event) => {
-
         event.stopPropagation();
 
-        validate();
+        if (validate(usernameInputRef)) {
+            errDisp.username.current.classList.add('hide-inline-error');
+            errDisp.username.current.classList.remove('show-inline-error');
+
+            setState(
+                produce(draft => {
+                    draft.isValidUsername = true;
+                })
+            )
+        } else {
+            errDisp.username.current.classList.remove('hide-inline-error');
+            errDisp.username.current.classList.add('show-inline-error');
+
+            setState(
+                produce(draft => {
+                    draft.isValidUsername = false;
+                })
+            )
+        }
 
     }
 
     const onPasswordInput = (event) => {
-
         event.stopPropagation();
 
-        validate();
+        if (validate(passwordInputRef)) {
+            errDisp.password.current.classList.add('hide-inline-error');
+            errDisp.password.current.classList.remove('show-inline-error');
+
+            setState(
+                produce(draft => {
+                    draft.isValidPassword = true;
+                })
+            )
+        } else {
+            errDisp.password.current.classList.remove('hide-inline-error');
+            errDisp.password.current.classList.add('show-inline-error');
+
+            setState(
+                produce(draft => {
+                    draft.isValidPassword = false;
+                })
+            )
+        }
 
     }
 
@@ -245,7 +282,28 @@ function Auth(props) {
 
         event.stopPropagation();
 
-        validate();
+        if (validate(confirmPasswordRef)) {
+            errDisp.confirmPassword.current.classList.add('hide-inline-error');
+            errDisp.confirmPassword.current.classList.remove('show-inline-error');
+
+
+            setState(
+                produce(draft => {
+                    draft.isValidConfirmPassword = true;
+                })
+            )
+        } else {
+            errDisp.confirmPassword.current.classList.remove('hide-inline-error');
+            errDisp.confirmPassword.current.classList.add('show-inline-error');
+
+            setState(
+                produce(draft => {
+                    draft.isValidConfirmPassword = false;
+                })
+            )
+        }
+
+
 
     }
 
@@ -397,6 +455,11 @@ function Auth(props) {
                                                 placeholder="username"
                                                 onInput={onUsernameInput} />
 
+                                            <span
+                                                ref={errDisp.username}
+                                                className='hide-inline-error'>
+                                                must be atleast 5 characters</span>
+
                                             <input
                                                 ref={passwordInputRef}
                                                 type="password"
@@ -405,22 +468,55 @@ function Auth(props) {
                                                 placeholder="password"
                                                 onInput={onPasswordInput} />
 
+                                            <span
+                                                ref={errDisp.password}
+                                                className='hide-inline-error'>
+                                                must be atleast 8 characters</span>
+
                                             {
                                                 (state.signin)
                                                     ? <></> :
-                                                    (<input
-                                                        ref={confirmPasswordRef}
-                                                        type="password"
-                                                        id='confirmPassword'
-                                                        className="form-control"
-                                                        placeholder="confirm password"
-                                                        onInput={onConfirmPasswordInput} />)
+                                                    (
+                                                        <>
+                                                            <input
+                                                                ref={confirmPasswordRef}
+                                                                type="password"
+                                                                id='confirmPassword'
+                                                                className="form-control"
+                                                                placeholder="confirm password"
+                                                                onInput={onConfirmPasswordInput} />
+                                                            <span
+                                                                ref={errDisp.confirmPassword}
+                                                                className='hide-inline-error'>
+                                                                must be atleast 8 characters</span>
+                                                        </>
+                                                    )
                                             }
 
                                             <div className="hstack justify-content-between">
-                                                <a href="" className="link-dark">{goToText()}</a>
+                                                <a
+                                                    href=""
+                                                    className="link-dark"
+                                                    onClick={
+                                                        (event) => {
+
+                                                            event.stopPropagation();
+
+                                                            if (state.signin) {
+
+                                                                navigate('signUp');
+                                                            } else {
+
+                                                                navigate('/geochat');
+                                                            }
+
+                                                        }
+                                                    }>{goToText()}</a>
                                                 <div className="submit d-flex justify-content-end p-1">
-                                                    <div ref={submitButtonRef} className="btn btn-dark" onClick={onSubmit}>submit</div>
+                                                    <div
+                                                        ref={submitButtonRef}
+                                                        className="btn btn-dark"
+                                                        onClick={onSubmit}>submit</div>
                                                 </div>
                                             </div>
 
