@@ -13,6 +13,7 @@ import { BrowserRouter } from "react-router-dom";
 import { LeftWindow } from "component/left-window/LeftWindow";
 import { MainUI } from "component/main-ui/MainUI";
 import { SubTopicInfoDisplay } from "route/sub-topic-info-display/SubTopicInfoDisplay";
+import { SignIn } from "route/auth/Auth";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 //<Route path='topic/:topicId/subTopic/:subTopicId/meta' element={<MessageDisplay />} />
@@ -24,21 +25,19 @@ root.render(
 
             <Routes>
 
-                <Route path='/'>
+                <Route path='/geochat' element={<MainUI />}>
 
-                    <Route path='geochat' element={<MainUI />}>
+                    <Route index element={<SignIn />} />
 
-                        <Route path='topic'>
+                    <Route path='topic'>
 
-                            <Route index element={<TopicDisplay />} />
+                        <Route index element={<TopicDisplay />} />
 
-                            <Route path=':topicId/subTopic'>
+                        <Route path=':topicId/subTopic'>
 
-                                <Route index element={<SubTopicDisplay />} />
+                            <Route index element={<SubTopicDisplay />} />
 
-                                <Route path=':subTopicId/meta' element={<SubTopicInfoDisplay />} />
-
-                            </Route>
+                            <Route path=':subTopicId/meta' element={<SubTopicInfoDisplay />} />
 
                         </Route>
 

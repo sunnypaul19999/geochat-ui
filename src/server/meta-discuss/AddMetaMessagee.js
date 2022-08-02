@@ -14,11 +14,6 @@ function createRequest(topicId, subTopicID, message) {
 
         withCredentials: true,
 
-        auth: {
-            username: 'username',
-            password: 'password'
-        },
-
         headers: {
             "Content-Type": "application/json",
         },

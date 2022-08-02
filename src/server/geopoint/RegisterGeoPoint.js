@@ -15,12 +15,6 @@ function createRequest(topicPageNumber) {
     }, {
 
         withCredentials: true,
-
-        auth: {
-            username: 'username',
-            password: 'password'
-        }
-
     });
 
 }

@@ -10,11 +10,6 @@ function createRequest(topicId, subTopicID, metaDiscussPageNumber) {
 
         withCredentials: true,
 
-        auth: {
-            username: 'username',
-            password: 'password'
-        },
-
         headers: {
             "Content-Type": "application/json",
         },
