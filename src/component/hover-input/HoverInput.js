@@ -149,9 +149,9 @@ export function HoverInput(props) {
 
     const isNotInputValid = () => {
 
-        //console.log(getLetterCount());
+        console.log(getLetterCount());
 
-        if (getLetterCount() > state.maxLetterCount) {
+        if (getLetterCount() > state.maxLetterCount || getLetterCount() < 20) {
 
             return true;
         }
