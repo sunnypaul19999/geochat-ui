@@ -79,9 +79,7 @@ function useValidAuth(usernameInputRef, passwordInputRef, confirmPasswordRef, su
 
         const confirmPassword = confirmPasswordRef.current.value;
 
-        const isValid = validatePasswordText(confirmPassword);
-
-        if (isValid && confirmPassword === passwordInputRef.current.value) {
+        if (confirmPassword === passwordInputRef.current.value) {
 
             validation.current.isConfirmPasswordValid = true;
 
@@ -228,7 +226,7 @@ function Auth(props) {
 
     }
 
-    const onUsernameInput = (event) => {
+    const onFormInput = (event) => {
         event.stopPropagation();
 
         if (validate(usernameInputRef)) {
@@ -251,11 +249,6 @@ function Auth(props) {
             )
         }
 
-    }
-
-    const onPasswordInput = (event) => {
-        event.stopPropagation();
-
         if (validate(passwordInputRef)) {
             errDisp.password.current.classList.add('hide-inline-error');
             errDisp.password.current.classList.remove('show-inline-error');
@@ -275,12 +268,6 @@ function Auth(props) {
                 })
             )
         }
-
-    }
-
-    const onConfirmPasswordInput = (event) => {
-
-        event.stopPropagation();
 
         if (validate(confirmPasswordRef)) {
             errDisp.confirmPassword.current.classList.add('hide-inline-error');
@@ -303,9 +290,64 @@ function Auth(props) {
             )
         }
 
-
-
     }
+
+    // const onPasswordInput = (event) => {
+    //     event?.stopPropagation();
+
+    //     if (validate(passwordInputRef)) {
+    //         errDisp.password.current.classList.add('hide-inline-error');
+    //         errDisp.password.current.classList.remove('show-inline-error');
+
+    //         setState(
+    //             produce(draft => {
+    //                 draft.isValidPassword = true;
+    //             })
+    //         )
+    //     } else {
+    //         errDisp.password.current.classList.remove('hide-inline-error');
+    //         errDisp.password.current.classList.add('show-inline-error');
+
+    //         setState(
+    //             produce(draft => {
+    //                 draft.isValidPassword = false;
+    //             })
+    //         )
+    //     }
+
+
+    //     onUsernameInput();
+    //     onConfirmPasswordInput();
+
+    // }
+
+    // const onConfirmPasswordInput = (event) => {
+    //     event?.stopPropagation();
+
+    //     if (validate(confirmPasswordRef)) {
+    //         errDisp.confirmPassword.current.classList.add('hide-inline-error');
+    //         errDisp.confirmPassword.current.classList.remove('show-inline-error');
+
+
+    //         setState(
+    //             produce(draft => {
+    //                 draft.isValidConfirmPassword = true;
+    //             })
+    //         )
+    //     } else {
+    //         errDisp.confirmPassword.current.classList.remove('hide-inline-error');
+    //         errDisp.confirmPassword.current.classList.add('show-inline-error');
+
+    //         setState(
+    //             produce(draft => {
+    //                 draft.isValidConfirmPassword = false;
+    //             })
+    //         )
+    //     }
+
+    //     onUsernameInput();
+    //     onPasswordInput();
+    // }
 
     const signInWithToken = async () => {
 
@@ -380,13 +422,13 @@ function Auth(props) {
 
             console.log(response.data.message);
 
-            navigate('/geochat/topic', { replace: true });
+            navigate('/geochat', { replace: true });
 
         } catch (e) {
 
             console.log(e);
 
-            if (e.response.status == 405) {
+            if (e.response.status == 409) {
 
                 toast('Username already exists!');
             }
@@ -424,7 +466,7 @@ function Auth(props) {
 
         if (state.signin) {
 
-            signInWithToken();
+            // signInWithToken();
         }
 
     }
@@ -453,7 +495,7 @@ function Auth(props) {
                                                 id='username'
                                                 className="form-control"
                                                 placeholder="username"
-                                                onInput={onUsernameInput} />
+                                                onInput={onFormInput} />
 
                                             <span
                                                 ref={errDisp.username}
@@ -466,7 +508,7 @@ function Auth(props) {
                                                 id='password'
                                                 className="form-control"
                                                 placeholder="password"
-                                                onInput={onPasswordInput} />
+                                                onInput={onFormInput} />
 
                                             <span
                                                 ref={errDisp.password}
@@ -484,11 +526,11 @@ function Auth(props) {
                                                                 id='confirmPassword'
                                                                 className="form-control"
                                                                 placeholder="confirm password"
-                                                                onInput={onConfirmPasswordInput} />
+                                                                onInput={onFormInput} />
                                                             <span
                                                                 ref={errDisp.confirmPassword}
                                                                 className='hide-inline-error'>
-                                                                must be atleast 8 characters</span>
+                                                                must match with password</span>
                                                         </>
                                                     )
                                             }
