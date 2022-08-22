@@ -17,6 +17,10 @@ import { BottomToolbar } from "component/bottom-toolbar/BottomToolbar";
 import { HoverInput } from "component/hover-input/HoverInput";
 import { updateTopic } from "server/topic/UpdateTopic";
 import { addTopic } from "server/topic/AddTopic";
+import { deleteTopic } from "server/topic/DeleteTopic";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function produceNextState(pageDetails, setState) {
@@ -251,9 +255,15 @@ export function TopicDisplay() {
         );
     }
 
-    const onDeleteTopicButtonClick = (serverItemId) => {
+    const onDeleteTopicButtonClick = async (serverItemId) => {
 
         console.log(`topic item id for deletetion ${serverItemId}`);
+
+        const message = await deleteTopic(serverItemId);
+
+        console.log(message);
+
+        toast(message);
     }
 
 
@@ -290,6 +300,18 @@ export function TopicDisplay() {
                 {hoverInput()}
 
             </RightWindow>
+
+            <ToastContainer
+                position="bottom-center"
+                autoClose={2000}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </>
 
     )

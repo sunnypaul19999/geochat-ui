@@ -149,7 +149,7 @@ export function HoverInput(props) {
 
     const isNotInputValid = () => {
 
-        console.log(getLetterCount());
+        // console.log(getLetterCount());
 
         if (getLetterCount() > state.maxLetterCount || getLetterCount() < 20) {
 
@@ -272,7 +272,7 @@ export function HoverInput(props) {
 
     useEffect(() => {
 
-        console.log(state.isContinued);
+        // console.log(state.isContinued);
 
         if (typeof state.defaultText === 'string') {
 

@@ -28,12 +28,13 @@ export async function deleteTopic(topicId) {
 
         const response = await createRequest(topicId);
 
-        return response.data;
+        return "Topic deleted!";
 
     } catch (e) {
 
         console.log(e);
 
+        return e.response.data.message;
     }
 
 }

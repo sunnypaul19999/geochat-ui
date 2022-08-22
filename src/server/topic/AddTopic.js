@@ -32,12 +32,13 @@ export async function addTopic(topicTitle) {
 
         const response = await createRequest(topicTitle);
 
-        return response.data;
+        return 'Topic added!';
 
     } catch (e) {
 
         console.log(e);
 
+        return e.response.data.message;
     }
 
 }

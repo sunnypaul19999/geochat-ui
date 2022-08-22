@@ -11,7 +11,6 @@ import 'stylesheet/auth/auth.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import produce from "immer";
-import { flushSync } from "react-dom";
 
 /*
     --- props ---
