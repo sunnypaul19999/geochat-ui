@@ -21,6 +21,8 @@ import { deleteTopic } from "server/topic/DeleteTopic";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ListItem } from "component/list-item/ListItem";
+import { TopicPage } from "./TopicPage";
 
 
 function produceNextState(pageDetails, setState) {
@@ -59,14 +61,17 @@ function produceNextState(pageDetails, setState) {
 
 function onObservedElementVisible(observedElementEntries) {
 
-    //console.log(`total observed elements = ${observedElementEntries.length}`);
+    console.log(`total observed elements = ${observedElementEntries.length}`);
 
     if (observedElementEntries[0].isIntersecting) {
 
         dispatchFetchNextTopicPageEvent(observedElementEntries[0].target);
-
     }
+}
 
+class Page {
+
+    static num;
 }
 
 
@@ -96,20 +101,37 @@ export function TopicDisplay() {
     const listItemDisplayRef = useRef();
 
 
-    const [observer, unobserver, disconnectObserver] = useDisplayObserver('topicListDisplay', 'observer#topicListDisplay', onObservedElementVisible);
+    const [observer, unobserver, disconnectObserver] = useDisplayObserver('topicListDisplay', 'observer#topicListDisplayWindow', onObservedElementVisible);
 
 
     const nextPageDetails = useCallback(async () => {
 
-        const pageDetails = await fetchTopicPage(state.nextPageNumber);
+        // const pageDetails = await fetchTopicPage(state.nextPageNumber);
 
-        produceNextState(pageDetails, setState);
+        // produceNextState(pageDetails, setState);
+
+        setState(
+            produce(draft => {
+
+                draft.nextPageNumber += 1;
+
+                Page.num = draft.nextPageNumber;
+            })
+        )
+
+
 
     }, [state]);
 
 
     //this effects loads items on page: 1
-    useEffect(() => { nextPageDetails(); }, []);
+    useEffect(() => {
+
+        // nextPageDetails();
+
+        Page.num = state.nextPageNumber;
+
+    }, []);
 
 
     const onFetchNextTopicPageEventHandler = async (event) => {
@@ -125,7 +147,6 @@ export function TopicDisplay() {
         if (listItemDisplayRef.current) {
 
             listItemDisplayRef.current.addEventListener('fetch-next-topic-page', onFetchNextTopicPageEventHandler);
-
         }
 
         return () => {
@@ -270,6 +291,51 @@ export function TopicDisplay() {
         toast(message);
     }
 
+    const getTopicPage = () => {
+
+        let topicPages = [];
+
+        for (let pageNumber = 1; pageNumber <= state.nextPageNumber; pageNumber++) {
+
+            let key;
+            const observe = {
+                observer: null,
+                unobserver: null,
+            }
+
+            if (pageNumber === state.nextPageNumber) {
+
+                key = `lastPage-topic-page-${pageNumber}`;
+
+                observe.observer = observer;
+
+                observe.unobserver = unobserver;
+
+            } else {
+
+                key = `topic-page-${pageNumber}`;
+            }
+
+            topicPages.push(
+                <TopicPage
+                    key={key}
+                    pageNumber={pageNumber}
+                    onEditTopicButtonClick={onEditTopicButtonClick}
+                    onDeleteTopicButtonClick={onDeleteTopicButtonClick}
+                    {...observe}
+                />
+            )
+        }
+
+        // if (topicPages.length === 0) {
+
+
+        //     return [];
+        // }
+
+        return topicPages;
+    }
+
 
     return (
 
@@ -288,7 +354,10 @@ export function TopicDisplay() {
                     }}>
 
                     {
-                        getTopicListItems(state.topics, onEditTopicButtonClick, onDeleteTopicButtonClick, observer, unobserver)
+                        //getTopicListItems(state.topics, onEditTopicButtonClick, onDeleteTopicButtonClick, observer, unobserver)
+
+                        getTopicPage()
+
                     }
 
                     <br /><br /><br />
@@ -320,3 +389,6 @@ export function TopicDisplay() {
 
     )
 }
+
+
+export { Page };

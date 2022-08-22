@@ -100,7 +100,6 @@ export function ListItem(props) {
         if (props.observe) {
 
             props.observe(itemRef.current);
-
         }
 
         return () => {
@@ -155,7 +154,14 @@ export function ListItem(props) {
         props.onDelete(state.serverItemId);
     }
 
+    // useEffect(() => {
 
+
+    //     console.log(props._ref);
+
+    // })
+
+    // (props._ref) ? props._ref : itemRef
     return (
         <div
             ref={itemRef}

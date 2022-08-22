@@ -21,7 +21,7 @@ const format = (page) => {
 
 async function fetchTopicPage(nextPageNumber) {
 
-    console.log(`nextPage = ${nextPageNumber}`)
+    // console.log(`nextPage = ${nextPageNumber}`)
 
     try {
 
