@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { updateSubTopic } from "server/subtopic/UpdateSubTopic";
 
 import 'stylesheet/list-item/list-item.css';
 
@@ -112,6 +113,7 @@ export function ListItem(props) {
         }
     }, [])
 
+
     const onClickListItem = (event) => {
 
         event.stopPropagation();
@@ -146,6 +148,7 @@ export function ListItem(props) {
         props.onEdit(state.serverItemId);
     }
 
+
     const onDeleteListItem = (event) => {
         event.stopPropagation();
 
@@ -156,7 +159,8 @@ export function ListItem(props) {
     return (
         <div
             ref={itemRef}
-            className="list-item" onClick={onClickListItem}>
+            className="list-item"
+            onClick={onClickListItem}>
             <div className="card">
                 <div className="card-body">
                     <p className="card-title">

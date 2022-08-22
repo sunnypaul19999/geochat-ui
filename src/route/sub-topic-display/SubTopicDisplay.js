@@ -111,7 +111,7 @@ export function SubTopicDisplay(props) {
     const listItemDisplayRef = useRef();
 
 
-    const [observer, unobserver, disconnectObserver] = useDisplayObserver('subTopicListDisplay', onObservedElementVisible);
+    const [observer, unobserver, disconnectObserver] = useDisplayObserver('subTopicListDisplay', 'observer#subTopicListDisplay', onObservedElementVisible);
 
 
     const nextPageDetails = useCallback(async () => {

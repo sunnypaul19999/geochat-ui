@@ -96,7 +96,7 @@ export function TopicDisplay() {
     const listItemDisplayRef = useRef();
 
 
-    const [observer, unobserver, disconnectObserver] = useDisplayObserver('topicListDisplay', onObservedElementVisible);
+    const [observer, unobserver, disconnectObserver] = useDisplayObserver('topicListDisplay', 'observer#topicListDisplay', onObservedElementVisible);
 
 
     const nextPageDetails = useCallback(async () => {

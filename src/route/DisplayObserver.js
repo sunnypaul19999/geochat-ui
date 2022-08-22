@@ -16,37 +16,39 @@ class TopicListDisplayObserver {
 
     }
 
-    constructor(rootElementId, onObservedElementVisible) {
+    constructor(rootElementId, observerId, onObservedElementVisible) {
+
+        if (!TopicListDisplayObserver.displayObserver) {
+
+            //displayObserver maintains map of root and it's intersection observer
+            //and returns the same when asked
+            TopicListDisplayObserver.displayObserver = {};
+        }
+
+        TopicListDisplayObserver.displayObserver[observerId] = this;
 
         this.options.root = document.getElementById(`#${rootElementId}`);
 
         Object.freeze(this.options);
 
-        //displayObserver maintains map of root and it's intersection observer
-        //and returns the same when asked
-        TopicListDisplayObserver.displayObserver = {};
-
-        TopicListDisplayObserver.displayObserver[rootElementId] = this;
-
         this.observer = new IntersectionObserver(onObservedElementVisible, this.options);
-
     }
 
 
-    static getTopicListDisplayObserver(rootElementId, onObservedElementVisible) {
+    static getTopicListDisplayObserver(rootElementId, observerId, onObservedElementVisible) {
 
         if (TopicListDisplayObserver.displayObserver) {
 
-            if (TopicListDisplayObserver.displayObserver[rootElementId]) {
+            if (TopicListDisplayObserver.displayObserver[observerId]) {
 
-                const displayObserver = TopicListDisplayObserver.displayObserver[rootElementId];
+                const displayObserver = TopicListDisplayObserver.displayObserver[observerId];
 
                 return displayObserver;
 
             }
         }
 
-        return new TopicListDisplayObserver(rootElementId, onObservedElementVisible);
+        return new TopicListDisplayObserver(rootElementId, observerId, onObservedElementVisible);
 
     }
 
@@ -84,9 +86,9 @@ class TopicListDisplayObserver {
 
 }
 
-export function useDisplayObserver(rootElementId, onObservedElementVisible) {
+export function useDisplayObserver(rootElementId, observerId, onObservedElementVisible) {
 
-    const displayObserver = TopicListDisplayObserver.getTopicListDisplayObserver(rootElementId, onObservedElementVisible);
+    const displayObserver = TopicListDisplayObserver.getTopicListDisplayObserver(rootElementId, observerId, onObservedElementVisible);
 
 
     return [

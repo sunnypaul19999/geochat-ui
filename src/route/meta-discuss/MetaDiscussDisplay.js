@@ -89,7 +89,7 @@ export function MessageDisplay(props) {
     const messageDisplayRef = useRef();
 
 
-    const [observer, unobserver, disconnectObserver] = useDisplayObserver('messageDisplay', onObservedElementVisible);
+    const [observer, unobserver, disconnectObserver] = useDisplayObserver('messageDisplay', 'observer#MessageDisplayWindow', onObservedElementVisible);
 
 
     const nextPageDetails = useCallback(async () => {
@@ -104,7 +104,6 @@ export function MessageDisplay(props) {
         // );
 
     }, [state]);
-
 
 
 
