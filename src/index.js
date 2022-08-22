@@ -1,22 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import ReactDOM from "react-dom/client";
 
-import { Routes, Route, Link, Outlet } from "react-router-dom";
+import { Routes, Route, Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 
 import { TopicDisplay } from "route/topic-display/TopicDisplay";
 
 import 'index.css';
 import { SubTopicDisplay } from "route/sub-topic-display/SubTopicDisplay";
-import { MessageDisplay } from "route/meta-discuss/MetaDiscussDisplay";
 import { BrowserRouter } from "react-router-dom";
-import { LeftWindow } from "component/left-window/LeftWindow";
 import { MainUI } from "component/main-ui/MainUI";
 import { SubTopicInfoDisplay } from "route/sub-topic-info-display/SubTopicInfoDisplay";
 import { SignIn, SignUp } from "route/auth/Auth";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-//<Route path='topic/:topicId/subTopic/:subTopicId/meta' element={<MessageDisplay />} />
+
+function Root() {
+
+    const navigate = useNavigate();
+
+    const location = useLocation();
+
+    useEffect(() => {
+
+        console.log(location.pathname);
+
+        if (location.pathname == '/') {
+
+            navigate('/geochat/signUp');
+        }
+
+    }, [])
+
+    return (<Outlet />);
+}
+
 root.render(
 
     <React.StrictMode>
@@ -25,21 +43,25 @@ root.render(
 
             <Routes>
 
-                <Route path='/geochat' element={<MainUI />}>
+                <Route path='/' element={<Root />}>
 
-                    <Route index element={<SignIn />} />
+                    <Route path='/geochat' element={<MainUI />}>
 
-                    <Route path='signUp' element={<SignUp />} />
+                        <Route index element={<SignIn />} />
 
-                    <Route path='topic'>
+                        <Route path='signUp' element={<SignUp />} />
 
-                        <Route index element={<TopicDisplay />} />
+                        <Route path='topic'>
 
-                        <Route path=':topicId/subTopic'>
+                            <Route index element={<TopicDisplay />} />
 
-                            <Route index element={<SubTopicDisplay />} />
+                            <Route path=':topicId/subTopic'>
 
-                            <Route path=':subTopicId/meta' element={<SubTopicInfoDisplay />} />
+                                <Route index element={<SubTopicDisplay />} />
+
+                                <Route path=':subTopicId/meta' element={<SubTopicInfoDisplay />} />
+
+                            </Route>
 
                         </Route>
 

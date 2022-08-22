@@ -30,9 +30,9 @@ function useValidAuth(usernameInputRef, passwordInputRef, confirmPasswordRef, su
 
     const validatePasswordText = (password) => {
 
-        //Minimum eight characters
+        //Minimum eight characters ^[A-Za-z\d#$@!%&*?]{8,30}$
 
-        const regex = new RegExp('^[A-Za-z\d#$@!%&*?]{8,30}$');
+        const regex = new RegExp(/^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{7,}$/);
 
         return regex.test(password);
     }
@@ -97,40 +97,14 @@ function useValidAuth(usernameInputRef, passwordInputRef, confirmPasswordRef, su
 
             // console.log(username.length >= 5)
 
-            if (username.length >= 5 && username.length < 50) {
+            const regex = new RegExp(/^[a-zA-Z0-9]{5,}$/);
+
+            if (regex.test(username)) {
 
                 validation.current.isUsernameValid = true;
-
-                // setState(
-                //     produce(draft => {
-
-                //         if (!draft.isUsernameValid) {
-
-                //             draft.isUsernameValid = true;
-
-                //             console.log(`username is greater than 5 50 ${draft.isUsernameValid}`)
-                //         }
-
-                //     })
-                // )
-
             } else {
 
                 validation.current.isUsernameValid = false;
-
-                // console.log(submitButtonRef.current.classList);
-
-                // setState(
-                //     produce(draft => {
-
-                //         if (draft.isUsernameValid) {
-
-                //             draft.isUsernameValid = false;
-                //         }
-
-                //     })
-                // )
-
             }
         }
 
@@ -349,27 +323,27 @@ function Auth(props) {
     //     onPasswordInput();
     // }
 
-    const signInWithToken = async () => {
+    // const signInWithToken = async () => {
 
-        try {
-            const response = await axios.get(`${serverConfig.config.baseUrl}/user/login`, {
+    //     try {
+    //         const response = await axios.get(`${serverConfig.config.baseUrl}/user/login`, {
 
-                withCredentials: true
-            });
+    //             withCredentials: true
+    //         });
 
-            console.log(response.data.message);
+    //         console.log(response.data.message);
 
-            navigate('/geochat/topic', { replace: true });
+    //         navigate('/geochat/topic', { replace: true });
 
-        } catch (e) {
+    //     } catch (e) {
 
-            console.log(e);
+    //         console.log(e);
 
-            console.log(JSON.stringify(e.response.data));
+    //         console.log(JSON.stringify(e.response.data));
 
-        }
+    //     }
 
-    }
+    // }
 
     const signIn = async (input) => {
 
@@ -398,7 +372,7 @@ function Auth(props) {
 
             if (e.response.status == 403 || e.response.status == 401) {
 
-                toast('Please Verify username and password');
+                toast('Invalid credentials');
             }
 
 
@@ -500,7 +474,7 @@ function Auth(props) {
                                             <span
                                                 ref={errDisp.username}
                                                 className='hide-inline-error'>
-                                                must be atleast 5 characters</span>
+                                                must have atleast 5 characters, numbers and no special characters</span>
 
                                             <input
                                                 ref={passwordInputRef}
@@ -513,7 +487,7 @@ function Auth(props) {
                                             <span
                                                 ref={errDisp.password}
                                                 className='hide-inline-error'>
-                                                must be atleast 8 characters</span>
+                                                must be atleast 8 characters and must contain 1 digit</span>
 
                                             {
                                                 (state.signin)
@@ -536,6 +510,7 @@ function Auth(props) {
                                             }
 
                                             <div className="hstack justify-content-between">
+
                                                 <a
                                                     href=""
                                                     className="link-dark"
@@ -554,14 +529,15 @@ function Auth(props) {
 
                                                         }
                                                     }>{goToText()}</a>
+
                                                 <div className="submit d-flex justify-content-end p-1">
                                                     <div
                                                         ref={submitButtonRef}
                                                         className="btn btn-dark"
                                                         onClick={onSubmit}>submit</div>
                                                 </div>
-                                            </div>
 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
