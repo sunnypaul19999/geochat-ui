@@ -32,12 +32,13 @@ export async function updateTopic(topicId, topicTitle) {
 
         const response = await createRequest(topicId, topicTitle);
 
-        return response.data;
+        return 'Topic updated!';
 
     } catch (e) {
 
         console.log(e);
 
+        return e.response.data.message;
     }
 
 }

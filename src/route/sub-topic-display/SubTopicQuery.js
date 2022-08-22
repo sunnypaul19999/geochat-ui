@@ -11,7 +11,7 @@ const format = (page) => {
             ...subTopic,
 
             //todo: remove below line, just for experiment
-            sub_topic_title: `sub-topic ${subTopic.sub_topic_id}`
+            // sub_topic_title: `sub-topic ${subTopic.sub_topic_id}`
         };
 
     });

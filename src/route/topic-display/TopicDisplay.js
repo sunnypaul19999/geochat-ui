@@ -180,13 +180,17 @@ export function TopicDisplay() {
 
         if (state.hoverInputTextarea.mode === hoverInputAreaModes.create) {
 
-            await addTopic(topicTitle);
+            const message = await addTopic(topicTitle);
+
+            toast(message);
 
         } else {
 
             if (state.hoverInputTextarea.mode === hoverInputAreaModes.edit) {
 
-                await updateTopic(serverItemId, topicTitle);
+                const message = await updateTopic(serverItemId, topicTitle);
+
+                toast(message);
             }
         }
 

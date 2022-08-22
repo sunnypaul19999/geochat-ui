@@ -11,7 +11,7 @@ const format = (page) => {
             ...topic,
 
             //todo: remove below line, just for experiment
-            topic_title: `topic ${topic.id}`
+            // topic_title: `topic ${topic.id}`
         };
 
     });
