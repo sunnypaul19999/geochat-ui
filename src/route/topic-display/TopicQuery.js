@@ -29,6 +29,8 @@ async function fetchTopicPage(nextPageNumber) {
 
         let topics = format(page);
 
+        // console.log(`fetching page topic ${nextPageNumber}`);
+
         //return pageNumber fetched and the topics
         return {
 

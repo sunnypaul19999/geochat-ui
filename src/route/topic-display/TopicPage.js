@@ -68,6 +68,11 @@ export function TopicPage(props) {
 
     const lastListItemRef = useRef();
 
+    const isMounted = useRef(true);
+
+    const isRefreshing = useRef(false);
+
+
     const [state, setState] = useState({
         pageNumber: props.pageNumber,
         /*
@@ -80,7 +85,6 @@ export function TopicPage(props) {
         topics: {},
     })
 
-    const isMounted = useRef(true);
 
     const getTopicListItems = (topics, onEditTopic, onDeleteTopic, observer, unobserver) => {
 
@@ -157,19 +161,37 @@ export function TopicPage(props) {
 
         const pageDetails = await fetchTopicPage(state.pageNumber);
 
+        // console.log(`updateState page topic ${state.pageNumber}`);
+
         updateState(pageDetails, setState);
 
         // console.log(pageDetails);
 
         if (isMounted.current) {
 
-            setTimeout(refresh, 1000);
+            if (!isRefreshing.current) {
+
+                isRefreshing.current = true;
+
+                // console.log(`refreshing page topic ${state.pageNumber}`);
+
+                setTimeout(() => {
+
+                    refresh()
+                        .then(() => {
+
+                            isRefreshing.current = false;
+
+                            refresh();
+                        })
+                }, 3000)
+            }
         }
     }
 
     useEffect(() => {
 
-        setTimeout(refresh, 0)
+        refresh();
 
     }, [])
 
