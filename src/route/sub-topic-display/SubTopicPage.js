@@ -78,6 +78,10 @@ export function SubTopicPage(props) {
 
     const isMounted = useRef(true);
 
+    const isRefreshing = useRef(false);
+
+    const refreshTimeouts = useRef([]);
+
     const [state, setState] = useState({
         pageNumber: props.pageNumber,
         topicId: props.topicId,
@@ -111,7 +115,7 @@ export function SubTopicPage(props) {
                 const subTopic = subTopics[subTopicId];
 
                 let props = {
-                    key: `sub_topic_${subTopicId}`,
+                    key: `sub_topic_${subTopicId}-updateTimeStamp-${(subTopic.timestamp) ? subTopic.timestamp : 0}`,
                     isSubTopic: true,
                     serverItemId: subTopicId,
                     title: subTopic.sub_topic_title,
@@ -124,12 +128,14 @@ export function SubTopicPage(props) {
                     unobserve: null,
                 }
 
-                //observe the last subTopic
+                //observe the last subTopic 
                 if (index === lastSubTopicIndex) {
 
-                    props.observe = observer;
-                    props.unobserve = unobserver;
+                    if (observer && unobserver) {
 
+                        props.observe = observer;
+                        props.unobserve = unobserver;
+                    }
                 }
 
                 listItems.push(<ListItem {...props} />);
@@ -147,19 +153,44 @@ export function SubTopicPage(props) {
 
         const pageDetails = await fetchSubTopicPage(state.topicId, state.pageNumber);
 
-        console.log(pageDetails);
+        // console.log(pageDetails);
 
-        // updateState(pageDetails, setState);
+        updateState(pageDetails, setState);
 
-        console.log(`refreshing page ${state.pageNumber}`);
+        if (isMounted.current) {
 
-        // setTimeout(refresh, 1000);
+            if (!isRefreshing.current) {
+
+                isRefreshing.current = true;
+
+                refreshTimeouts.current.push(
+
+                    setTimeout(
+                        () => {
+
+                            refresh()
+                                .then(() => {
+
+                                    isRefreshing.current = false
+
+                                    refreshTimeouts.current.pop();
+
+                                    // console.log(refreshTimeouts.current);
+
+                                    console.log(`refreshing page subtopic ${state.pageNumber}`);
+
+                                    refresh();
+                                })
+
+                        }, 2500));
+            }
+        }
     }
 
 
     useEffect(() => {
 
-        setTimeout(refresh, 0);
+        refresh();
 
     }, [])
 

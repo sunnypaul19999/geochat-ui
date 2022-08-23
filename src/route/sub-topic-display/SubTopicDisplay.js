@@ -145,7 +145,7 @@ export function SubTopicDisplay(props) {
 
         event.stopPropagation();
 
-        // nextPageDetails();
+        nextPageDetails();
     }
 
 
