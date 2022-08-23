@@ -13,6 +13,7 @@ import { fetchMetaDiscussPage } from "./MetaDiscussQuery";
 import { dispatchFetchNextMetaDiscussPageEvent } from "./MetaDiscussEvent";
 import { useParams } from "react-router-dom";
 import { MessageInput } from "component/message-input/MessageInput";
+import { MessagePage } from "./MessagePage";
 
 
 function produceNextState(pageDetails, setState) {
@@ -156,14 +157,58 @@ export function MessageDisplay(props) {
     }, [onFetchNextMetaDiscussPageEventHandler, onMessageSendEventHandler]);
 
 
-    const messageItems = () => {
+    // const messageItems = () => {
 
-        const [messageItems, lastMessageElementId] = getMessageItems(state.messages, observer, unobserver);
+    //     const [messageItems, lastMessageElementId] = getMessageItems(state.messages, observer, unobserver);
 
-        lastMessageItemRef.current = lastMessageElementId;
+    //     lastMessageItemRef.current = lastMessageElementId;
 
-        return messageItems;
+    //     return messageItems;
 
+    // }
+
+    const getMessageItems = () => {
+
+        let pages = [];
+
+        for (let pageNumber = state.nextPageNumber; pageNumber >= 1; pageNumber--) {
+
+            let key;
+
+            const observe = {
+
+                observer: null,
+
+                unobserver: null,
+
+            }
+
+            if (pageNumber === state.nextPageNumber) {
+
+                key = `firstPage-message-page-${pageNumber}`;
+
+                observe.observer = observer;
+
+                observe.unobserver = unobserver;
+
+            } else {
+
+                key = `message-page-${pageNumber}`;
+            }
+
+            pages.push(
+                <MessagePage
+                    key={key}
+                    pageNumber={pageNumber}
+                    topicId={state.topicId}
+                    subTopicId={state.subTopicId}
+                    {...observe}
+                />
+            )
+        }
+
+
+        return pages;
     }
 
 
@@ -181,7 +226,7 @@ export function MessageDisplay(props) {
                 }}>
 
                 {
-                    messageItems()
+                    getMessageItems()
                 }
 
                 <br />
