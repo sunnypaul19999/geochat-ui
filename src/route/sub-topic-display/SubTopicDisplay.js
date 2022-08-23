@@ -19,6 +19,7 @@ import { BottomToolbar } from "component/bottom-toolbar/BottomToolbar";
 import { HoverInput } from "component/hover-input/HoverInput";
 import { updateSubTopic } from "server/subtopic/UpdateSubTopic";
 import { addSubTopic } from "server/subtopic/AddSubTopic";
+import { SubTopicPage } from "./SubTopicPage";
 
 
 
@@ -116,23 +117,35 @@ export function SubTopicDisplay(props) {
 
     const nextPageDetails = useCallback(async () => {
 
-        const pageDetails = await fetchSubTopicPage(state.topicId, state.nextPageNumber);
+        // const pageDetails = await fetchSubTopicPage(state.topicId, state.nextPageNumber);
 
 
-        produceNextState(pageDetails, setState);
+        // produceNextState(pageDetails, setState);
+
+        setState(
+            produce(draft => {
+
+                draft.nextPageNumber += 1;
+
+            })
+        )
 
     }, [state]);
 
 
     //this effects loads items on page: 1
-    useEffect(() => { nextPageDetails(); }, []);
+    useEffect(() => {
+
+        // nextPageDetails();
+
+    }, []);
 
 
     const onFetchNextTopicPageEventHandler = async (event) => {
 
         event.stopPropagation();
 
-        nextPageDetails();
+        // nextPageDetails();
     }
 
 
@@ -359,6 +372,50 @@ export function SubTopicDisplay(props) {
     }
 
 
+    const getSubTopicPage = () => {
+
+        // getSubTopicListItems(state.subTopics, onEditSubTopicButtonClick, onDeleteSubTopicButtonClick, observer, unobserver)
+
+        let pages = [];
+
+        for (let pageNumber = 1; pageNumber <= state.nextPageNumber; pageNumber++) {
+
+            let key;
+
+            const observe = {
+                observer: null,
+                unobserver: null,
+            }
+
+            if (pageNumber === state.nextPageNumber) {
+
+                key = `lastPage-topic-page-${pageNumber}`;
+
+                observe.observer = observer;
+
+                observe.unobserver = unobserver;
+
+            } else {
+
+                key = `sub-topic-page-${pageNumber}`;
+            }
+
+            pages.push(
+                <SubTopicPage
+                    key={key}
+                    topicId={topicId}
+                    pageNumber={pageNumber}
+                    onEditSubTopicButtonClick={onEditSubTopicButtonClick}
+                    onDeleteSubTopicButtonClick={onDeleteSubTopicButtonClick}
+                    {...observe}
+                />
+            )
+        }
+
+        return pages;
+    }
+
+
     return (
 
         <>
@@ -375,7 +432,7 @@ export function SubTopicDisplay(props) {
                     }}>
 
                     {
-                        getSubTopicListItems(state.subTopics, onEditSubTopicButtonClick, onDeleteSubTopicButtonClick, observer, unobserver)
+                        getSubTopicPage()
                     }
 
                     <br /><br /><br />

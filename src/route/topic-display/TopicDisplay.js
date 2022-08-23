@@ -69,11 +69,6 @@ function onObservedElementVisible(observedElementEntries) {
     }
 }
 
-class Page {
-
-    static num;
-}
-
 
 export function TopicDisplay() {
 
@@ -115,7 +110,6 @@ export function TopicDisplay() {
 
                 draft.nextPageNumber += 1;
 
-                Page.num = draft.nextPageNumber;
             })
         )
 
@@ -128,8 +122,6 @@ export function TopicDisplay() {
     useEffect(() => {
 
         // nextPageDetails();
-
-        Page.num = state.nextPageNumber;
 
     }, []);
 
@@ -389,6 +381,3 @@ export function TopicDisplay() {
 
     )
 }
-
-
-export { Page };

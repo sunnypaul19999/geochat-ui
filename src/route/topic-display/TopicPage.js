@@ -80,7 +80,7 @@ export function TopicPage(props) {
         topics: {},
     })
 
-    const stateRef = useRef(state);
+    const isMounted = useRef(true);
 
     const getTopicListItems = (topics, onEditTopic, onDeleteTopic, observer, unobserver) => {
 
@@ -161,7 +161,10 @@ export function TopicPage(props) {
 
         // console.log(pageDetails);
 
-        setTimeout(refresh, 1000);
+        if (isMounted.current) {
+
+            setTimeout(refresh, 1000);
+        }
     }
 
     useEffect(() => {
@@ -169,6 +172,18 @@ export function TopicPage(props) {
         setTimeout(refresh, 0)
 
     }, [])
+
+
+    useEffect(() => {
+
+        isMounted.current = true;
+
+
+        return () => {
+
+            isMounted.current = false;
+        }
+    })
 
 
     const call = () => {
